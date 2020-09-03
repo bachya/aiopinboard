@@ -1,4 +1,4 @@
-# 📌 aiopinboard: A Python3 library for Elexa Guardian devices
+# 📌 aiopinboard: A Python 3 Library for Pinboard
 
 [![CI](https://github.com/bachya/aiopinboard/workflows/CI/badge.svg)](https://github.com/bachya/aiopinboard/actions)
 [![PyPi](https://img.shields.io/pypi/v/aiopinboard.svg)](https://pypi.python.org/pypi/aiopinboard)
