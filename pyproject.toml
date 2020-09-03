@@ -19,7 +19,7 @@ use_parentheses = true
 
 [tool.poetry]
 name = "aiopinboard"
-version = "0.0.1"
+version = "1.0.1"
 description = "A Python 3, asyncio-based library for the Pinboard API"
 readme = "README.md"
 authors = ["Aaron Bach <bachya1208@gmail.com>"]
@@ -39,10 +39,12 @@ classifiers = [
 [tool.poetry.dependencies]
 aiohttp = "^3.6.2"
 async_timeout = "^3.0.1"
+defusedxml = "^0.6.0"
 maya = "^0.6.1"
 python = "^3.6.1"
 
 [tool.poetry.dev-dependencies]
+aresponses = "^2.0.0"
 asynctest = "^0.13.0"
 pre-commit = "^2.0.1"
 pylint = "^2.5.2"
