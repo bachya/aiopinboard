@@ -43,7 +43,7 @@ You can retrieve your Pinboard API token via
 
 All API usage starts with creating an `API` object that contains your Pinboard API token:
 
-```
+```python
 import asyncio
 
 from aiopinboard import Client
@@ -61,7 +61,7 @@ asyncio.run(main())
 
 To get the UTC datetime of the last "change" (bookmark added, updated, or deleted):
 
-```
+```python
 import asyncio
 
 from aiopinboard import Client
@@ -82,7 +82,7 @@ This method is should be used to determine whether additional API calls should b
 
 To delete a bookmark by its URL:
 
-```
+```python
 import asyncio
 
 from aiopinboard import Client
