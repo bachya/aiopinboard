@@ -76,7 +76,9 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
-This method is should be used to determine whether additional API calls should be made.
+This method should be used to determine whether additional API calls should be made –
+for example, if nothing has changed since the last time a request was made, the
+implementing library can halt.
 
 ## Delete a Bookmark
 
