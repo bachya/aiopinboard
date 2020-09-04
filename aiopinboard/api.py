@@ -1,14 +1,15 @@
 """Define an API object to interact with the Pinboard API."""
-from datetime import datetime
+from datetime import date, datetime
 import logging
-from typing import Optional
+from typing import List, Optional
 
 from aiohttp import ClientSession, ClientTimeout
 from aiohttp.client_exceptions import ClientError
 from defusedxml import ElementTree
 import maya
 
-from .errors import RequestError, raise_on_response_error
+from aiopinboard.errors import RequestError, raise_on_response_error
+from aiopinboard.helpers.bookmark import Bookmark
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -57,6 +58,26 @@ class API:
     async def async_delete_bookmark(self, url: str) -> None:
         """Delete a bookmark by URL."""
         await self._async_request("get", "posts/delete", params={"url": url})
+
+    async def async_get_bookmarks_by_date(self, the_date: date) -> List[Bookmark]:
+        """Get bookmarks by date bookmarked."""
+        resp = await self._async_request(
+            "get", "posts/get", params={"dt": str(the_date)}
+        )
+
+        return [
+            Bookmark(
+                bookmark.attrib["hash"],
+                bookmark.attrib["href"],
+                bookmark.attrib["description"],
+                bookmark.attrib["extended"],
+                maya.parse(bookmark.attrib["time"]).datetime(),
+                bookmark.attrib["tag"].split(),
+                bookmark.attrib.get("toread") == "yes",
+                bookmark.attrib.get("shared") == "yes",
+            )
+            for bookmark in resp
+        ]
 
     async def async_get_last_change_datetime(self) -> datetime:
         """Return the most recent time a bookmark was added, updated or deleted."""
