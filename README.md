@@ -29,7 +29,7 @@ pip install aiopinboard
 
 * Python 3.6
 * Python 3.7
-* Python 3.8 
+* Python 3.8
 
 # API Token
 
@@ -80,7 +80,50 @@ This method should be used to determine whether additional API calls should be m
 for example, if nothing has changed since the last time a request was made, the
 implementing library can halt.
 
-## Delete a Bookmark
+## Getting a Bookmark
+
+To get a bookmark by its URL:
+
+```python
+import asyncio
+
+from aiopinboard import Client
+
+
+async def main() -> None:
+    api = API("<PINBOARD_API_TOKEN>")
+    await api.async_get_bookmark_by_url("https://my.com/bookmark")
+
+
+asyncio.run(main())
+```
+
+To get all bookmarks created on a certain date:
+
+
+```python
+import asyncio
+from datetime import date
+
+from aiopinboard import Client
+
+
+async def main() -> None:
+    api = API("<PINBOARD_API_TOKEN>")
+    await api.async_get_bookmarks_by_date(date.today())
+
+    # Optionally filter the results with a list of tags – note that only bookmarks that
+    # have all tags will be returned:
+    await api.async_get_bookmarks_by_date(
+        datetime(2020, 9, 2, 3, 59, 55), tags=["tag1", "tag2"]
+    )
+)
+
+
+asyncio.run(main())
+```
+
+## Deleting a Bookmark
 
 To delete a bookmark by its URL:
 
