@@ -21,7 +21,7 @@ async def test_data_error(aresponses):
     async with ClientSession() as session:
         api = API(TEST_API_TOKEN, session=session)
         with pytest.raises(RequestError) as err:
-            await api.async_delete_bookmark("http://test.url")
+            await api.bookmark.async_delete_bookmark("http://test.url")
         assert str(err.value) == "item not found"
 
 
@@ -38,4 +38,4 @@ async def test_http_error(aresponses):
     async with ClientSession() as session:
         api = API(TEST_API_TOKEN, session=session)
         with pytest.raises(RequestError):
-            await api.async_delete_bookmark("http://test.url")
+            await api.bookmark.async_delete_bookmark("http://test.url")
