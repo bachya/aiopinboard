@@ -272,8 +272,7 @@ class API:
 
         resp = await self._async_request("get", "posts/suggest", params={"url": url})
         for tag in resp:
-            if tag.text in data[tag.tag]:
-                continue
-            data[tag.tag].append(tag.text)
+            if tag.text not in data[tag.tag]:
+                data[tag.tag].append(tag.text)
 
         return data
