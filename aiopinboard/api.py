@@ -261,3 +261,19 @@ class API:
 
         resp = await self._async_request("get", "posts/recent", params=params)
         return [async_create_bookmark_from_xml(bookmark) for bookmark in resp]
+
+    async def async_get_suggested_tags(self, url: str) -> Dict[str, List[str]]:
+        """Return a dictionary of popular and recommended tags for a URL.
+
+        :param url: The URL of the bookmark to delete
+        :type url: ``str``
+        """
+        data: Dict[str, List[str]] = {"popular": [], "recommended": []}
+
+        resp = await self._async_request("get", "posts/suggest", params={"url": url})
+        for tag in resp:
+            if tag.text in data[tag.tag]:
+                continue
+            data[tag.tag].append(tag.text)
+
+        return data

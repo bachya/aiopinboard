@@ -244,6 +244,26 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
+## Getting Suggested Tags
+
+To get lists of popular (used by the community) and recommended (used by you) tags for a
+particular URL:
+
+```python
+import asyncio
+
+from aiopinboard import Client
+
+
+async def main() -> None:
+    api = API("<PINBOARD_API_TOKEN>")
+    await api.async_get_suggested_tags("https://my.com/bookmark")
+    # >>> {"popular": ["tag1", "tag2"], "recommended": ["tag3"]}
+
+
+asyncio.run(main())
+```
+
 # Contributing
 
 1. [Check for open features/bugs](https://github.com/bachya/aiopinboard/issues)
