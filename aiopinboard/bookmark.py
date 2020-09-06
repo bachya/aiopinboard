@@ -1,13 +1,26 @@
 """Define API endpoints for bookmarks."""
+from dataclasses import dataclass
 from datetime import date, datetime
 from typing import Any, Awaitable, Callable, Dict, List, Optional
 
 from defusedxml import ElementTree
 import maya
 
-from aiopinboard.helpers.bookmark import Bookmark
-
 DEFAULT_RECENT_BOOKMARKS_COUNT: int = 15
+
+
+@dataclass
+class Bookmark:  # pylint: disable=too-many-instance-attributes
+    """Define a representation of a Pinboard bookmark."""
+
+    hash: str
+    href: str
+    title: str
+    description: str
+    last_modified: datetime
+    tags: List[str]
+    unread: bool
+    shared: bool
 
 
 def async_create_bookmark_from_xml(tree: ElementTree) -> Bookmark:
