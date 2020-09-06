@@ -191,3 +191,30 @@ async def test_get_last_change_datetime_no_session(aresponses):
     most_recent_dt = await api.async_get_last_change_datetime()
 
     assert most_recent_dt == pytz.utc.localize(datetime(2020, 9, 3, 13, 7, 19))
+
+
+@pytest.mark.asyncio
+async def test_get_recent_bookmarks(aresponses):
+    """Test getting recent bookmarks."""
+    aresponses.add(
+        "api.pinboard.in",
+        "/v1/posts/recent",
+        "get",
+        aresponses.Response(text=load_fixture("posts_recent_response.xml"), status=200),
+    )
+
+    async with ClientSession() as session:
+        api = API(TEST_API_TOKEN, session=session)
+
+        bookmarks = await api.async_get_recent_bookmarks(count=1, tags=["tag1"])
+        assert len(bookmarks) == 1
+        assert bookmarks[0] == Bookmark(
+            "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "https://mylink.com",
+            "A really neat website!",
+            "I saved this bookmark to Pinboard",
+            pytz.utc.localize(datetime(2020, 9, 2, 3, 59, 55)),
+            tags=["tag1", "tag2"],
+            unread=True,
+            shared=False,
+        )
