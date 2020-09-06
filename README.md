@@ -105,7 +105,7 @@ from aiopinboard import Client
 
 async def main() -> None:
     api = API("<PINBOARD_API_TOKEN>")
-    await api.async_get_bookmark_by_url("https://my.com/bookmark")
+    await api.bookmark.async_get_bookmark_by_url("https://my.com/bookmark")
     # >>> <Bookmark href="https://my.com/bookmark">
 
 
@@ -122,7 +122,7 @@ from aiopinboard import Client
 
 async def main() -> None:
     api = API("<PINBOARD_API_TOKEN>")
-    await api.async_get_all_bookmarks()
+    await api.bookmark.async_get_all_bookmarks()
     # >>> [<Bookmark ...>, <Bookmark ...>]
 
 
@@ -148,12 +148,12 @@ from aiopinboard import Client
 
 async def main() -> None:
     api = API("<PINBOARD_API_TOKEN>")
-    await api.async_get_bookmarks_by_date(date.today())
+    await api.bookmark.async_get_bookmarks_by_date(date.today())
     # >>> [<Bookmark ...>, <Bookmark ...>]
 
     # Optionally filter the results with a list of tags – note that only bookmarks that
     # have all tags will be returned:
-    await api.async_get_bookmarks_by_date(date.today(), tags=["tag1", "tag2"])
+    await api.bookmark.async_get_bookmarks_by_date(date.today(), tags=["tag1", "tag2"])
     # >>> [<Bookmark ...>, <Bookmark ...>]
 )
 
@@ -171,12 +171,12 @@ from aiopinboard import Client
 
 async def main() -> None:
     api = API("<PINBOARD_API_TOKEN>")
-    await api.async_get_recent_bookmarks(count=10)
+    await api.bookmark.async_get_recent_bookmarks(count=10)
     # >>> [<Bookmark ...>, <Bookmark ...>]
 
     # Optionally filter the results with a list of tags – note that only bookmarks that
     # have all tags will be returned:
-    await api.async_get_recent_bookmarks(count=20, tags=["tag1", "tag2"])
+    await api.bookmark.async_get_recent_bookmarks(count=20, tags=["tag1", "tag2"])
     # >>> [<Bookmark ...>, <Bookmark ...>]
 
 
@@ -193,7 +193,7 @@ from aiopinboard import Client
 
 async def main() -> None:
     api = API("<PINBOARD_API_TOKEN>")
-    dates = await api.async_get_dates()
+    dates = await api.bookmark.async_get_dates()
     # >>> {datetime.date(2020, 09, 05): 4, ...}
 
 
@@ -211,7 +211,7 @@ from aiopinboard import Client
 
 async def main() -> None:
     api = API("<PINBOARD_API_TOKEN>")
-    await api.async_add_bookmark("https://my.com/bookmark", "My New Bookmark")
+    await api.bookmark.async_add_bookmark("https://my.com/bookmark", "My New Bookmark")
 
 
 asyncio.run(main())
@@ -238,7 +238,7 @@ from aiopinboard import Client
 
 async def main() -> None:
     api = API("<PINBOARD_API_TOKEN>")
-    await api.async_delete_bookmark("https://my.com/bookmark")
+    await api.bookmark.async_delete_bookmark("https://my.com/bookmark")
 
 
 asyncio.run(main())
@@ -257,7 +257,7 @@ from aiopinboard import Client
 
 async def main() -> None:
     api = API("<PINBOARD_API_TOKEN>")
-    await api.async_get_suggested_tags("https://my.com/bookmark")
+    await api.bookmark.async_get_suggested_tags("https://my.com/bookmark")
     # >>> {"popular": ["tag1", "tag2"], "recommended": ["tag3"]}
 
 

@@ -27,7 +27,7 @@ async def test_add_bookmark(aresponses):
 
         # A unsuccessful request will throw an exception, so if no exception is thrown,
         # we can count this as a successful test:
-        await api.async_add_bookmark(
+        await api.bookmark.async_add_bookmark(
             "http://test.url",
             "My Test Bookmark",
             description="I like this bookmark",
@@ -54,7 +54,7 @@ async def test_delete_bookmark(aresponses):
 
         # A unsuccessful request will throw an exception, so if no exception is thrown,
         # we can count this as a successful test:
-        await api.async_delete_bookmark("http://test.url")
+        await api.bookmark.async_delete_bookmark("http://test.url")
 
 
 @pytest.mark.asyncio
@@ -70,7 +70,7 @@ async def test_get_all_bookmarks(aresponses):
     async with ClientSession() as session:
         api = API(TEST_API_TOKEN, session=session)
 
-        bookmarks = await api.async_get_all_bookmarks(
+        bookmarks = await api.bookmark.async_get_all_bookmarks(
             tags=["tag1"],
             start=2,
             results=1,
@@ -111,7 +111,7 @@ async def test_get_bookmark_by_url(aresponses):
     async with ClientSession() as session:
         api = API(TEST_API_TOKEN, session=session)
 
-        bookmark = await api.async_get_bookmark_by_url("https://mylink.com")
+        bookmark = await api.bookmark.async_get_bookmark_by_url("https://mylink.com")
         assert bookmark == Bookmark(
             "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
             "https://mylink.com",
@@ -123,7 +123,9 @@ async def test_get_bookmark_by_url(aresponses):
             shared=False,
         )
 
-        bookmark = await api.async_get_bookmark_by_url("https://doesntexist.com")
+        bookmark = await api.bookmark.async_get_bookmark_by_url(
+            "https://doesntexist.com"
+        )
         assert not bookmark
 
 
@@ -148,7 +150,7 @@ async def test_get_bookmarks_by_date(aresponses):
     async with ClientSession() as session:
         api = API(TEST_API_TOKEN, session=session)
 
-        bookmarks = await api.async_get_bookmarks_by_date(
+        bookmarks = await api.bookmark.async_get_bookmarks_by_date(
             pytz.utc.localize(datetime(2020, 9, 3, 13, 7, 19))
         )
         assert len(bookmarks) == 1
@@ -163,7 +165,7 @@ async def test_get_bookmarks_by_date(aresponses):
             shared=False,
         )
 
-        bookmarks = await api.async_get_bookmarks_by_date(
+        bookmarks = await api.bookmark.async_get_bookmarks_by_date(
             pytz.utc.localize(datetime(2020, 9, 3, 13, 7, 19)), tags=["non-tag1"]
         )
         assert not bookmarks
@@ -182,7 +184,7 @@ async def test_get_dates(aresponses):
     async with ClientSession() as session:
         api = API(TEST_API_TOKEN, session=session)
 
-        dates = await api.async_get_dates(tags=["tag1", "tag2"])
+        dates = await api.bookmark.async_get_dates(tags=["tag1", "tag2"])
         assert dates == {
             maya.parse("2020-09-05").datetime().date(): 1,
             maya.parse("2020-09-04").datetime().date(): 1,
@@ -202,7 +204,7 @@ async def test_get_last_change_datetime(aresponses):
 
     async with ClientSession() as session:
         api = API(TEST_API_TOKEN, session=session)
-        most_recent_dt = await api.async_get_last_change_datetime()
+        most_recent_dt = await api.bookmark.async_get_last_change_datetime()
 
         assert most_recent_dt == pytz.utc.localize(datetime(2020, 9, 3, 13, 7, 19))
 
@@ -221,7 +223,7 @@ async def test_get_last_change_datetime_no_session(aresponses):
     )
 
     api = API(TEST_API_TOKEN)
-    most_recent_dt = await api.async_get_last_change_datetime()
+    most_recent_dt = await api.bookmark.async_get_last_change_datetime()
 
     assert most_recent_dt == pytz.utc.localize(datetime(2020, 9, 3, 13, 7, 19))
 
@@ -239,7 +241,9 @@ async def test_get_recent_bookmarks(aresponses):
     async with ClientSession() as session:
         api = API(TEST_API_TOKEN, session=session)
 
-        bookmarks = await api.async_get_recent_bookmarks(count=1, tags=["tag1"])
+        bookmarks = await api.bookmark.async_get_recent_bookmarks(
+            count=1, tags=["tag1"]
+        )
         assert len(bookmarks) == 1
         assert bookmarks[0] == Bookmark(
             "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
@@ -268,7 +272,7 @@ async def test_get_suggested_tags(aresponses):
     async with ClientSession() as session:
         api = API(TEST_API_TOKEN, session=session)
 
-        tags = await api.async_get_suggested_tags("https://mylink.com")
+        tags = await api.bookmark.async_get_suggested_tags("https://mylink.com")
         assert tags == {
             "popular": ["security"],
             "recommended": ["ssh", "linux"],
