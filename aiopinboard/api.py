@@ -144,6 +144,7 @@ class API:
 
         :param url: The URL of the bookmark to get
         :type url: ``Optional[Bookmark]``
+        :rtype: ``Optional[Bookmark]``
         """
         resp = await self._async_request("get", "posts/get", params={"url": url})
 
@@ -161,6 +162,7 @@ class API:
         :type bookmarked_on: ``date``
         :param tags: An optional list of tags to filter results by
         :type tags: ``Optional[List[str]]``
+        :rtype: ``List[Bookmark]``
         """
         params: Dict[str, Any] = {"dt": str(bookmarked_on)}
 
@@ -170,8 +172,32 @@ class API:
         resp = await self._async_request("get", "posts/get", params=params)
         return [async_create_bookmark_from_xml(bookmark) for bookmark in resp]
 
+    async def async_get_dates(
+        self, *, tags: Optional[List[str]] = None
+    ) -> Dict[date, int]:
+        """Get a dictionary of dates and the number of bookmarks created on that date.
+
+        :param tags: An optional list of tags to filter results by
+        :type tags: ``Optional[List[str]]``
+        :rtype: ``Dict[date, int]``
+        """
+        params: Dict[str, Any] = {}
+
+        if tags:
+            params["tags"] = " ".join([str(tag) for tag in tags])
+
+        resp = await self._async_request("get", "posts/dates")
+
+        return {
+            maya.parse(row.attrib["date"]).datetime().date(): int(row.attrib["count"])
+            for row in resp
+        }
+
     async def async_get_last_change_datetime(self) -> datetime:
-        """Return the most recent time a bookmark was added, updated or deleted."""
+        """Return the most recent time a bookmark was added, updated or deleted.
+
+        :rtype: ``datetime``
+        """
         resp = await self._async_request("get", "posts/update")
         maya_dt = maya.parse(resp.attrib["time"])
         return maya_dt.datetime()

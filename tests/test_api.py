@@ -2,6 +2,7 @@
 from datetime import datetime
 
 from aiohttp import ClientSession
+import maya
 import pytest
 import pytz
 
@@ -133,6 +134,27 @@ async def test_get_bookmarks_by_date(aresponses):
             pytz.utc.localize(datetime(2020, 9, 3, 13, 7, 19)), tags=["non-tag1"]
         )
         assert not bookmarks
+
+
+@pytest.mark.asyncio
+async def test_get_dates(aresponses):
+    """Test getting bookmarks by date."""
+    aresponses.add(
+        "api.pinboard.in",
+        "/v1/posts/dates",
+        "get",
+        aresponses.Response(text=load_fixture("posts_dates_response.xml"), status=200),
+    )
+
+    async with ClientSession() as session:
+        api = API(TEST_API_TOKEN, session=session)
+
+        dates = await api.async_get_dates(tags=["tag1", "tag2"])
+        assert dates == {
+            maya.parse("2020-09-05").datetime().date(): 1,
+            maya.parse("2020-09-04").datetime().date(): 1,
+            maya.parse("2020-09-03").datetime().date(): 3,
+        }
 
 
 @pytest.mark.asyncio

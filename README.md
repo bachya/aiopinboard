@@ -184,6 +184,25 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
+## Get Bookmark Dates
+
+To get a summary of dates and how many bookmarks were created on those dates:
+
+```python
+import asyncio
+
+from aiopinboard import Client
+
+
+async def main() -> None:
+    api = API("<PINBOARD_API_TOKEN>")
+    dates = await api.async_get_dates()
+    # >>> {datetime.date(2020, 09, 05): 4, ...}
+
+
+asyncio.run(main())
+```
+
 # Contributing
 
 1. [Check for open features/bugs](https://github.com/bachya/aiopinboard/issues)
