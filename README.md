@@ -323,6 +323,39 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
+## Notes
+
+### The `Note` Object
+
+API endpoints that retrieve one or more notes will return `Note` objects, which
+carry all of the expected properties of a note:
+
+* `note_id`: the unique ID
+* `title`: the title
+* `hash`: the computed hash
+* `created_at`: the UTC datetime the note was created
+* `updated_at`: the UTC datetime the note was updated
+* `length`: the length
+
+### Getting Notes
+
+To get all notes for an account:
+
+```python
+import asyncio
+
+from aiopinboard import Client
+
+
+async def main() -> None:
+    api = API("<PINBOARD_API_TOKEN>")
+    await api.note.async_get_notes()
+    # >>> [<Note ...>, <Note ...>]
+
+
+asyncio.run(main())
+```
+
 
 # Contributing
 

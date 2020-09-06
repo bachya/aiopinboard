@@ -3,7 +3,7 @@ from typing import Awaitable, Callable, Dict
 
 
 class TagAPI:
-    """Define an tag "manager" object."""
+    """Define a tag "manager" object."""
 
     def __init__(self, async_request: Callable[..., Awaitable]) -> None:
         """Initialize."""

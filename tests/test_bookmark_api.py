@@ -7,7 +7,7 @@ import pytest
 import pytz
 
 from aiopinboard import API
-from aiopinboard.helpers.bookmark import Bookmark
+from aiopinboard.bookmark import Bookmark
 
 from tests.common import TEST_API_TOKEN, load_fixture
 
