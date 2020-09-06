@@ -12,6 +12,33 @@ from tests.common import TEST_API_TOKEN, load_fixture
 
 
 @pytest.mark.asyncio
+async def test_add_bookmark(aresponses):
+    """Test deleting a bookmark."""
+    aresponses.add(
+        "api.pinboard.in",
+        "/v1/posts/add",
+        "get",
+        aresponses.Response(text=load_fixture("posts_add_response.xml"), status=200),
+    )
+
+    async with ClientSession() as session:
+        api = API(TEST_API_TOKEN, session=session)
+
+        # A unsuccessful request will throw an exception, so if no exception is thrown,
+        # we can count this as a successful test:
+        await api.async_add_bookmark(
+            "http://test.url",
+            "My Test Bookmark",
+            description="I like this bookmark",
+            tags=["tag1", "tag2"],
+            created_datetime=datetime.now(),
+            replace=True,
+            shared=True,
+            toread=True,
+        )
+
+
+@pytest.mark.asyncio
 async def test_delete_bookmark(aresponses):
     """Test deleting a bookmark."""
     aresponses.add(

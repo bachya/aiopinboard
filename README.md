@@ -139,6 +139,33 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
+## Adding a Bookmark
+
+To add a bookmark:
+
+```python
+import asyncio
+
+from aiopinboard import Client
+
+
+async def main() -> None:
+    api = API("<PINBOARD_API_TOKEN>")
+    await api.async_add_bookmark("https://my.com/bookmark", "My New Bookmark")
+
+
+asyncio.run(main())
+```
+
+You can specify several optional parameters while editing a bookmark:
+
+* `description`: the optional description of the bookmark
+* `tags`: an optional list of tags to assign to the bookmark
+* `created_datetime`: the optional creation datetime to use (defaults to now)
+* `replace`: whether this should replace a bookmark with the same URL
+* `shared`: whether this bookmark should be shared
+* `toread`: whether this bookmark should be unread
+
 ## Deleting a Bookmark
 
 To delete a bookmark by its URL:

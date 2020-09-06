@@ -1,7 +1,7 @@
 """Define an API object to interact with the Pinboard API."""
 from datetime import date, datetime
 import logging
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 
 from aiohttp import ClientSession, ClientTimeout
 from aiohttp.client_exceptions import ClientError
@@ -13,7 +13,7 @@ from aiopinboard.helpers.bookmark import Bookmark
 
 _LOGGER = logging.getLogger(__name__)
 
-API_URL_BASE = "https://api.pinboard.in/v1"
+API_URL_BASE: str = "https://api.pinboard.in/v1"
 
 DEFAULT_TIMEOUT: int = 10
 
@@ -84,6 +84,53 @@ class API:
             if not use_running_session:
                 await session.close()
 
+    async def async_add_bookmark(
+        self,
+        url: str,
+        title: str,
+        *,
+        description: Optional[str] = None,
+        tags: Optional[List[str]] = None,
+        created_datetime: Optional[datetime] = None,
+        replace: bool = True,
+        shared: bool = False,
+        toread: bool = False,
+    ) -> None:
+        """Add a new bookmark.
+
+        :param url: The URL of the bookmark
+        :type url: ``str``
+        :param title: The title of the bookmark
+        :type title: ``str``
+        :param description: The optional description of the bookmark
+        :type description: ``Optional[str]``
+        :param tags: An optional list of tags to assign to the bookmark
+        :type tags: ``Optional[List[str]]``
+        :param created_datetime: The optional creation datetime to use (defaults to now)
+        :type created_datetime: ``Optional[datetime]``
+        :param replace: Whether this should replace a bookmark with the same URL
+        :type replace: ``bool``
+        :param shared: Whether this bookmark should be shared
+        :type shared: ``bool``
+        :param toread: Whether this bookmark should be unread
+        :type toread: ``bool``
+        :rtype: ``Bookmark``
+        """
+        params: Dict[str, Any] = {"url": url, "description": title}
+
+        if description:
+            params["description"] = description
+        if tags:
+            params["tags"] = tags
+        if created_datetime:
+            params["dt"] = created_datetime.isoformat()
+
+        params["replace"] = "yes" if replace else "no"
+        params["shared"] = "yes" if shared else "no"
+        params["toread"] = "yes" if toread else "no"
+
+        await self._async_request("get", "posts/add", params=params)
+
     async def async_delete_bookmark(self, url: str) -> None:
         """Delete a bookmark by URL.
 
@@ -115,7 +162,8 @@ class API:
         :param tags: An optional list of tags to filter results by
         :type tags: ``Optional[List[str]]``
         """
-        params = {"dt": str(bookmarked_on)}
+        params: Dict[str, Any] = {"dt": str(bookmarked_on)}
+
         if tags:
             params["tags"] = " ".join([str(tag) for tag in tags])
 
