@@ -139,6 +139,30 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
+## Get Recent Bookmarks
+
+To get recent bookmarks:
+
+```python
+import asyncio
+
+from aiopinboard import Client
+
+
+async def main() -> None:
+    api = API("<PINBOARD_API_TOKEN>")
+    await api.async_get_recent_bookmarks(count=10)
+    # >>> [<Bookmark ...>, <Bookmark ...>]
+
+    # Optionally filter the results with a list of tags – note that only bookmarks that
+    # have all tags will be returned:
+    await api.async_get_bookmarks_by_date(count=20, tags=["tag1", "tag2"])
+    # >>> [<Bookmark ...>, <Bookmark ...>]
+
+
+asyncio.run(main())
+```
+
 ## Adding a Bookmark
 
 To add a bookmark:

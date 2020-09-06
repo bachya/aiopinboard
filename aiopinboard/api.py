@@ -15,6 +15,7 @@ _LOGGER = logging.getLogger(__name__)
 
 API_URL_BASE: str = "https://api.pinboard.in/v1"
 
+DEFAULT_RECENT_BOOKMARKS_COUNT: int = 15
 DEFAULT_TIMEOUT: int = 10
 
 
@@ -201,3 +202,25 @@ class API:
         resp = await self._async_request("get", "posts/update")
         maya_dt = maya.parse(resp.attrib["time"])
         return maya_dt.datetime()
+
+    async def async_get_recent_bookmarks(
+        self,
+        *,
+        count: int = DEFAULT_RECENT_BOOKMARKS_COUNT,
+        tags: Optional[List[str]] = None,
+    ) -> List[Bookmark]:
+        """Get recent bookmarks.
+
+        :param count: The number of bookmarks to return (max of 100)
+        :type count: ``int``
+        :param tags: An optional list of tags to filter results by
+        :type tags: ``Optional[List[str]]``
+        :rtype: ``List[Bookmark]``
+        """
+        params: Dict[str, Any] = {"count": count}
+
+        if tags:
+            params["tags"] = " ".join([str(tag) for tag in tags])
+
+        resp = await self._async_request("get", "posts/recent", params=params)
+        return [async_create_bookmark_from_xml(bookmark) for bookmark in resp]
