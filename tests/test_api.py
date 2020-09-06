@@ -251,3 +251,25 @@ async def test_get_recent_bookmarks(aresponses):
             unread=True,
             shared=False,
         )
+
+
+@pytest.mark.asyncio
+async def test_get_suggested_tags(aresponses):
+    """Test getting recent bookmarks."""
+    aresponses.add(
+        "api.pinboard.in",
+        "/v1/posts/suggest",
+        "get",
+        aresponses.Response(
+            text=load_fixture("posts_suggest_response.xml"), status=200
+        ),
+    )
+
+    async with ClientSession() as session:
+        api = API(TEST_API_TOKEN, session=session)
+
+        tags = await api.async_get_suggested_tags("https://mylink.com")
+        assert tags == {
+            "popular": ["security"],
+            "recommended": ["ssh", "linux"],
+        }
