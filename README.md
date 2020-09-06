@@ -8,7 +8,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/a03c9e96f19a3dc37f98/maintainability)](https://codeclimate.com/github/bachya/aiopinboard/maintainability)
 [![Say Thanks](https://img.shields.io/badge/SayThanks-!-1EAEDB.svg)](https://saythanks.io/to/bachya)
 
-`aiopinboard` is a Python3, `asyncio`-focused library for interacting with
+`aiopinboard` is a Python3, `asyncio`-focused library for interacting with the
 [Pinboard](https://pinboard.in) API.
 
 - [Installation](#installation)
