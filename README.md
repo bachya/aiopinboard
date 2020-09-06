@@ -4,7 +4,7 @@
 [![PyPi](https://img.shields.io/pypi/v/aiopinboard.svg)](https://pypi.python.org/pypi/aiopinboard)
 [![Version](https://img.shields.io/pypi/pyversions/aiopinboard.svg)](https://pypi.python.org/pypi/aiopinboard)
 [![License](https://img.shields.io/pypi/l/aiopinboard.svg)](https://github.com/bachya/aiopinboard/blob/master/LICENSE)
-[![Code Coverage](https://codecov.io/gh/bachya/aiopinboard/branch/master/graph/badge.svg)](https://codecov.io/gh/bachya/aiopinboard)
+[![Code Coverage](https://codecov.io/gh/bachya/aiopinboard/branch/dev/graph/badge.svg)](https://codecov.io/gh/bachya/aiopinboard)
 [![Maintainability](https://api.codeclimate.com/v1/badges/a03c9e96f19a3dc37f98/maintainability)](https://codeclimate.com/github/bachya/aiopinboard/maintainability)
 [![Say Thanks](https://img.shields.io/badge/SayThanks-!-1EAEDB.svg)](https://saythanks.io/to/bachya)
 
@@ -56,6 +56,20 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
+## The `Bookmark` Object
+
+API endpoints that retrieve one or more bookmarks will return `Bookmark` objects, which
+carry all of the expected properties of a bookmark:
+
+* `hash`: the unique identifier of the bookmark
+* `href`: the bookmark's URL
+* `title`: the bookmark's title
+* `description`: the bookmark's description
+* `last_modified`: the UTC date the bookmark was last modified
+* `tags`: a list of tags applied to the bookmark
+* `unread`: whether the bookmark is unread
+* `shared`: whether the bookmark is shared
+
 ## Getting the Last Change Datetime
 
 To get the UTC datetime of the last "change" (bookmark added, updated, or deleted):
@@ -92,6 +106,7 @@ from aiopinboard import Client
 async def main() -> None:
     api = API("<PINBOARD_API_TOKEN>")
     await api.async_get_bookmark_by_url("https://my.com/bookmark")
+    # >>> <Bookmark href="https://my.com/bookmark">
 
 
 asyncio.run(main())
@@ -110,12 +125,14 @@ from aiopinboard import Client
 async def main() -> None:
     api = API("<PINBOARD_API_TOKEN>")
     await api.async_get_bookmarks_by_date(date.today())
+    # >>> [<Bookmark ...>, <Bookmark ...>]
 
     # Optionally filter the results with a list of tags – note that only bookmarks that
     # have all tags will be returned:
     await api.async_get_bookmarks_by_date(
         datetime(2020, 9, 2, 3, 59, 55), tags=["tag1", "tag2"]
     )
+    # >>> [<Bookmark ...>, <Bookmark ...>]
 )
 
 
