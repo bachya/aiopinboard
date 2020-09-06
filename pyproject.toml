@@ -19,7 +19,7 @@ use_parentheses = true
 
 [tool.poetry]
 name = "aiopinboard"
-version = "1.0.1"
+version = "0.0.1"
 description = "A Python 3, asyncio-based library for the Pinboard API"
 readme = "README.md"
 authors = ["Aaron Bach <bachya1208@gmail.com>"]
