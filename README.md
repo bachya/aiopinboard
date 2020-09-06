@@ -56,7 +56,9 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
-## The `Bookmark` Object
+## Bookmarks
+
+### The `Bookmark` Object
 
 API endpoints that retrieve one or more bookmarks will return `Bookmark` objects, which
 carry all of the expected properties of a bookmark:
@@ -70,7 +72,7 @@ carry all of the expected properties of a bookmark:
 * `unread`: whether the bookmark is unread
 * `shared`: whether the bookmark is shared
 
-## Getting the Last Change Datetime
+### Getting the Last Change Datetime
 
 To get the UTC datetime of the last "change" (bookmark added, updated, or deleted):
 
@@ -93,7 +95,7 @@ This method should be used to determine whether additional API calls should be m
 for example, if nothing has changed since the last time a request was made, the
 implementing library can halt.
 
-## Getting Bookmarks
+### Getting Bookmarks
 
 To get a bookmark by its URL:
 
@@ -199,7 +201,7 @@ async def main() -> None:
 
 asyncio.run(main())
 ```
-## Adding a Bookmark
+### Adding a Bookmark
 
 To add a bookmark:
 
@@ -226,7 +228,7 @@ You can specify several optional parameters while editing a bookmark:
 * `shared`: whether this bookmark should be shared
 * `toread`: whether this bookmark should be unread
 
-## Deleting a Bookmark
+### Deleting a Bookmark
 
 To delete a bookmark by its URL:
 
@@ -244,7 +246,28 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
-## Getting Suggested Tags
+## Tags
+
+### Getting Tags
+
+To get all tags for an account (and a count of how often each tag is used):
+
+```python
+import asyncio
+
+from aiopinboard import Client
+
+
+async def main() -> None:
+    api = API("<PINBOARD_API_TOKEN>")
+    await api.tag.async_get_tags()
+    # >>> {"tag1": 3, "tag2": 8}
+
+
+asyncio.run(main())
+```
+
+### Getting Suggested Tags
 
 To get lists of popular (used by the community) and recommended (used by you) tags for a
 particular URL:
@@ -263,6 +286,43 @@ async def main() -> None:
 
 asyncio.run(main())
 ```
+
+### Deleting a Tag
+
+To delete a tag:
+
+```python
+import asyncio
+
+from aiopinboard import Client
+
+
+async def main() -> None:
+    api = API("<PINBOARD_API_TOKEN>")
+    await api.tag.async_delete_tag("tag1")
+
+
+asyncio.run(main())
+```
+
+### Renaming a Tag
+
+To rename a tag:
+
+```python
+import asyncio
+
+from aiopinboard import Client
+
+
+async def main() -> None:
+    api = API("<PINBOARD_API_TOKEN>")
+    await api.tag.async_rename_tag("old-tag", "new-tag")
+
+
+asyncio.run(main())
+```
+
 
 # Contributing
 
