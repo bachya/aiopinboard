@@ -93,7 +93,7 @@ This method should be used to determine whether additional API calls should be m
 for example, if nothing has changed since the last time a request was made, the
 implementing library can halt.
 
-## Getting a Bookmark
+## Getting Bookmarks
 
 To get a bookmark by its URL:
 
@@ -112,8 +112,32 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
-To get all bookmarks created on a certain date:
+To get all bookmarks
 
+```python
+import asyncio
+
+from aiopinboard import Client
+
+
+async def main() -> None:
+    api = API("<PINBOARD_API_TOKEN>")
+    await api.async_get_all_bookmarks()
+    # >>> [<Bookmark ...>, <Bookmark ...>]
+
+
+asyncio.run(main())
+```
+
+You can specify several optional parameters while editing a bookmark:
+
+* `tags`: an optional list of tags to filter results by
+* `start`: the optional starting index to return (defaults to the start)
+* `results`: the optional number of results (defaults to all)
+* `from_dt`: the optional datetime to start from
+* `to_dt`: the optional datetime to end at
+
+To get all bookmarks created on a certain date:
 
 ```python
 import asyncio
@@ -129,17 +153,13 @@ async def main() -> None:
 
     # Optionally filter the results with a list of tags – note that only bookmarks that
     # have all tags will be returned:
-    await api.async_get_bookmarks_by_date(
-        datetime(2020, 9, 2, 3, 59, 55), tags=["tag1", "tag2"]
-    )
+    await api.async_get_bookmarks_by_date(date.today(), tags=["tag1", "tag2"])
     # >>> [<Bookmark ...>, <Bookmark ...>]
 )
 
 
 asyncio.run(main())
 ```
-
-## Get Recent Bookmarks
 
 To get recent bookmarks:
 
@@ -156,13 +176,29 @@ async def main() -> None:
 
     # Optionally filter the results with a list of tags – note that only bookmarks that
     # have all tags will be returned:
-    await api.async_get_bookmarks_by_date(count=20, tags=["tag1", "tag2"])
+    await api.async_get_recent_bookmarks(count=20, tags=["tag1", "tag2"])
     # >>> [<Bookmark ...>, <Bookmark ...>]
 
 
 asyncio.run(main())
 ```
 
+To get a summary of dates and how many bookmarks were created on those dates:
+
+```python
+import asyncio
+
+from aiopinboard import Client
+
+
+async def main() -> None:
+    api = API("<PINBOARD_API_TOKEN>")
+    dates = await api.async_get_dates()
+    # >>> {datetime.date(2020, 09, 05): 4, ...}
+
+
+asyncio.run(main())
+```
 ## Adding a Bookmark
 
 To add a bookmark:
@@ -203,25 +239,6 @@ from aiopinboard import Client
 async def main() -> None:
     api = API("<PINBOARD_API_TOKEN>")
     await api.async_delete_bookmark("https://my.com/bookmark")
-
-
-asyncio.run(main())
-```
-
-## Get Bookmark Dates
-
-To get a summary of dates and how many bookmarks were created on those dates:
-
-```python
-import asyncio
-
-from aiopinboard import Client
-
-
-async def main() -> None:
-    api = API("<PINBOARD_API_TOKEN>")
-    dates = await api.async_get_dates()
-    # >>> {datetime.date(2020, 09, 05): 4, ...}
 
 
 asyncio.run(main())
