@@ -140,6 +140,43 @@ class API:
         """
         await self._async_request("get", "posts/delete", params={"url": url})
 
+    async def async_get_all_bookmarks(
+        self,
+        *,
+        tags: Optional[List[str]] = None,
+        start: int = 0,
+        results: Optional[int] = None,
+        from_dt: Optional[datetime] = None,
+        to_dt: Optional[datetime] = None,
+    ) -> List[Bookmark]:
+        """Get recent bookmarks.
+
+        :param tags: An optional list of tags to filter results by
+        :type tags: ``Optional[List[str]]``
+        :param start: The optional starting index to return (defaults to the start)
+        :type start: ``int``
+        :param results: The optional number of results (defaults to all)
+        :type results: ``int``
+        :param from_dt: The optional datetime to start from
+        :type from_dt: ``Optional[datetime]``
+        :param to_dt: The optional datetime to end at
+        :type to_dt: ``Optional[datetime]``
+        :rtype: ``List[Bookmark]``
+        """
+        params: Dict[str, Any] = {"start": start}
+
+        if tags:
+            params["tags"] = " ".join([str(tag) for tag in tags])
+        if results:
+            params["results"] = results
+        if from_dt:
+            params["fromdt"] = from_dt.isoformat()
+        if to_dt:
+            params["fromdt"] = to_dt.isoformat()
+
+        resp = await self._async_request("get", "posts/all", params=params)
+        return [async_create_bookmark_from_xml(bookmark) for bookmark in resp]
+
     async def async_get_bookmark_by_url(self, url: str) -> Optional[Bookmark]:
         """Get bookmark by a URL. Returns None if no bookmark exists for URL.
 

@@ -1,5 +1,5 @@
 """Test the API."""
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from aiohttp import ClientSession
 import maya
@@ -55,6 +55,39 @@ async def test_delete_bookmark(aresponses):
         # A unsuccessful request will throw an exception, so if no exception is thrown,
         # we can count this as a successful test:
         await api.async_delete_bookmark("http://test.url")
+
+
+@pytest.mark.asyncio
+async def test_get_all_bookmarks(aresponses):
+    """Test getting recent bookmarks."""
+    aresponses.add(
+        "api.pinboard.in",
+        "/v1/posts/all",
+        "get",
+        aresponses.Response(text=load_fixture("posts_all_response.xml"), status=200),
+    )
+
+    async with ClientSession() as session:
+        api = API(TEST_API_TOKEN, session=session)
+
+        bookmarks = await api.async_get_all_bookmarks(
+            tags=["tag1"],
+            start=2,
+            results=1,
+            from_dt=datetime.now(),
+            to_dt=datetime.now() + timedelta(days=2),
+        )
+        assert len(bookmarks) == 1
+        assert bookmarks[0] == Bookmark(
+            "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "https://mylink.com",
+            "A really neat website!",
+            "I saved this bookmark to Pinboard",
+            pytz.utc.localize(datetime(2020, 9, 2, 3, 59, 55)),
+            tags=["tag1", "tag2"],
+            unread=True,
+            shared=False,
+        )
 
 
 @pytest.mark.asyncio
