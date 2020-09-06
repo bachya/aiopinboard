@@ -8,6 +8,7 @@ from defusedxml import ElementTree
 
 from aiopinboard.bookmark import BookmarkAPI
 from aiopinboard.errors import RequestError, raise_on_response_error
+from aiopinboard.tag import TagAPI
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -33,6 +34,7 @@ class API:  # pylint: disable=too-few-public-methods
         self._session: ClientSession = session
 
         self.bookmark = BookmarkAPI(self._async_request)
+        self.tag = TagAPI(self._async_request)
 
     async def _async_request(self, method: str, endpoint: str, **kwargs) -> ElementTree:
         """Make a request to the API and return the XML response."""
