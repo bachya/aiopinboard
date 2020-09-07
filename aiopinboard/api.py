@@ -64,7 +64,7 @@ class API:  # pylint: disable=too-few-public-methods
 
                 return response_root
         except ClientError as err:
-            raise RequestError(err)
+            raise RequestError(err) from None
         finally:
             if not use_running_session:
                 await session.close()
