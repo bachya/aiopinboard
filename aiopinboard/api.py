@@ -1,6 +1,6 @@
 """Define an API object to interact with the Pinboard API."""
 import logging
-from typing import Optional
+from typing import Any, Dict, Optional
 
 from aiohttp import ClientSession, ClientTimeout
 from aiohttp.client_exceptions import ClientError
@@ -32,13 +32,15 @@ class API:  # pylint: disable=too-few-public-methods
     ) -> None:
         """Initialize."""
         self._api_token = api_token
-        self._session: ClientSession = session
+        self._session: Optional[ClientSession] = session
 
         self.bookmark = BookmarkAPI(self._async_request)
         self.note = NoteAPI(self._async_request)
         self.tag = TagAPI(self._async_request)
 
-    async def _async_request(self, method: str, endpoint: str, **kwargs) -> ElementTree:
+    async def _async_request(
+        self, method: str, endpoint: str, **kwargs: Dict[str, Any]
+    ) -> ElementTree:
         """Make a request to the API and return the XML response."""
         kwargs.setdefault("params", {})
         kwargs["params"]["auth_token"] = self._api_token
@@ -49,6 +51,8 @@ class API:  # pylint: disable=too-few-public-methods
             session = self._session
         else:
             session = ClientSession(timeout=ClientTimeout(total=DEFAULT_TIMEOUT))
+
+        assert session
 
         try:
             async with session.request(

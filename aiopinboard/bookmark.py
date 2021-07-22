@@ -1,7 +1,7 @@
 """Define API endpoints for bookmarks."""
 from dataclasses import dataclass
 from datetime import date, datetime
-from typing import Any, Awaitable, Callable, Dict, List, Optional
+from typing import Any, Awaitable, Callable, Dict, List, Optional, cast
 
 from defusedxml import ElementTree
 import maya
@@ -202,7 +202,7 @@ class BookmarkAPI:
         """
         resp = await self._async_request("get", "posts/update")
         maya_dt = maya.parse(resp.attrib["time"])
-        return maya_dt.datetime()
+        return cast(datetime, maya_dt.datetime())
 
     async def async_get_recent_bookmarks(
         self,
