@@ -7,4 +7,4 @@ pre-commit==2.0.1
 pylint==2.5.2
 pytest-asyncio==0.10.0
 pytest-cov==2.8.1
-pytest==5.3.5
+pytest==6.2.5
