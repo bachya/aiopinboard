@@ -1,6 +1,6 @@
 aiohttp>=3.7.4post0
 aresponses==1.1.2
-async_timeout==3.0.1
+async_timeout==4.0.1
 defusedxml==0.6.0
 maya==0.6.1
 pytest-aiohttp==0.3.0
