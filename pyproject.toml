@@ -60,7 +60,7 @@ classifiers = [
 [tool.poetry.dependencies]
 aiohttp = "^3.7.4post0"
 async_timeout = "^4.0.1"
-defusedxml = "^0.6.0"
+defusedxml = "^0.7.0"
 maya = "^0.6.1"
 python = "^3.7.0"
 
@@ -70,4 +70,4 @@ pre-commit = "^2.0.1"
 pylint = "^2.5.2"
 pytest = "^6.2.5"
 pytest-aiohttp = "^0.3.0"
-pytest-cov = "^2.8.1"
+pytest-cov = "^3.0.0"
