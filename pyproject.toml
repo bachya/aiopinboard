@@ -58,8 +58,7 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-aiohttp = "^3.7.4post0"
-async_timeout = "^4.0.1"
+aiohttp = ">=3.8.0"
 defusedxml = "^0.7.0"
 maya = "^0.6.1"
 python = "^3.7.0"
