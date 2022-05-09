@@ -2,11 +2,11 @@
 .DS_Store
 .coverage
 .mypy_cache
-.tox/
+.nox
+.tox
 .venv
-__pycache__/
+__pycache__
 coverage.xml
-dist/
 docs/_build
 poetry.lock
 tags
