@@ -27,17 +27,16 @@ jobs:
           - "3.10"
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
           architecture: x64
 
       - run: |
-          python -m venv venv
-          venv/bin/pip install -r requirements_test.txt
-          venv/bin/py.test tests/
+          pip install nox==2022.1.7 poetry==1.1.13
+          nox -rs tests
 
   coverage:
 
@@ -46,24 +45,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v3
         with:
           python-version: "3.x"
           architecture: x64
 
       - run: |
-          python -m venv venv
-          venv/bin/pip install -r requirements_test.txt
-          venv/bin/py.test \
-            -s \
-            --verbose \
-            --cov-report term-missing \
-            --cov-report xml \
-            --cov=aiopinboard tests
+          pip install nox==2022.1.7 poetry==1.1.13
+          nox -rs coverage
 
-      - uses: codecov/codecov-action@v2
+      - uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
@@ -74,9 +67,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v3
         with:
           python-version: "3.x"
           architecture: x64
