@@ -10,7 +10,7 @@ repos:
           - --configfile=.bandit.yaml
         files: ^aiopinboard/.+\.py$
   - repo: https://github.com/python/black
-    rev: 21.7b0
+    rev: 22.3.0
     hooks:
       - id: black
         args:
@@ -64,3 +64,7 @@ repos:
     hooks:
       - id: shellcheck
         files: ^script/.+
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v2.32.1
+    hooks:
+      - id: pyupgrade
