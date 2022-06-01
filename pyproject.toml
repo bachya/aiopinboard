@@ -75,8 +75,8 @@ aresponses = "^2.0.0"
 nox = "^2022.1.7"
 pre-commit = "^2.0.1"
 pylint = "^2.5.2"
-pytest = "^6.2.5"
-pytest-aiohttp = "^0.3.0"
+pytest = "^7.0.0"
+pytest-aiohttp = "^1.0.0"
 pytest-cov = "^3.0.0"
 
 [tool.pylint.BASIC]
