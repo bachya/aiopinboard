@@ -1,10 +1,12 @@
 """Define API endpoints for nodes."""
+from __future__ import annotations
+
+from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Awaitable, Callable, List
 
-from defusedxml import ElementTree
 import maya
+from defusedxml import ElementTree
 
 
 @dataclass
@@ -22,9 +24,11 @@ class Note:  # pylint: disable=too-many-instance-attributes
 def async_create_note_from_xml(tree: ElementTree) -> Note:
     """Create a note from an XML response.
 
-    :param tree: The XML element tree to parse
-    :type tree: ``ElementTree``
-    :rtype: ``Note``
+    Args:
+        tree: A parsed XML tree.
+
+    Returns:
+        A Note object.
     """
     return Note(
         tree.attrib["id"],
@@ -39,14 +43,19 @@ def async_create_note_from_xml(tree: ElementTree) -> Note:
 class NoteAPI:  # pylint: disable=too-few-public-methods
     """Define a note "manager" object."""
 
-    def __init__(self, async_request: Callable[..., Awaitable]) -> None:
-        """Initialize."""
+    def __init__(self, async_request: Callable[..., Awaitable[ElementTree]]) -> None:
+        """Initialize.
+
+        Args:
+            async_request: The request method from the Client object.
+        """
         self._async_request = async_request
 
-    async def async_get_notes(self) -> List[Note]:
+    async def async_get_notes(self) -> list[Note]:
         """Get all notes.
 
-        :rtype: ``List[Note]``
+        Returns:
+            A list of Note objects.
         """
         resp = await self._async_request("get", "notes/list")
         return [async_create_note_from_xml(note) for note in resp]

@@ -1,6 +1,8 @@
 """Define an API object to interact with the Pinboard API."""
+from __future__ import annotations
+
 import logging
-from typing import Any, Dict, Optional
+from typing import Any
 
 from aiohttp import ClientSession, ClientTimeout
 from aiohttp.client_exceptions import ClientError
@@ -27,32 +29,43 @@ class API:  # pylint: disable=too-few-public-methods
     :type api_token: ``Optional[ClientSession]``
     """
 
-    def __init__(
-        self, api_token: str, *, session: Optional[ClientSession] = None
-    ) -> None:
-        """Initialize."""
+    def __init__(self, api_token: str, *, session: ClientSession | None = None) -> None:
+        """Initialize.
+
+        Args:
+            api_token: A Pinboard API token.
+            session: An optional aiohttp ClientSession.
+        """
         self._api_token = api_token
-        self._session: Optional[ClientSession] = session
+        self._session = session
 
         self.bookmark = BookmarkAPI(self._async_request)
         self.note = NoteAPI(self._async_request)
         self.tag = TagAPI(self._async_request)
 
     async def _async_request(
-        self, method: str, endpoint: str, **kwargs: Dict[str, Any]
+        self, method: str, endpoint: str, **kwargs: dict[str, Any]
     ) -> ElementTree:
-        """Make a request to the API and return the XML response."""
+        """Make a request to the API and return the XML response.
+
+        Args:
+            method: An HTTP method.
+            endpoint: A relative API endpoint.
+            **kwargs: Additional kwargs to send with the request.
+
+        Returns:
+            An API response payload.
+
+        Raises:
+            RequestError: Raised upon an underlying HTTP error.
+        """
         kwargs.setdefault("params", {})
         kwargs["params"]["auth_token"] = self._api_token
 
-        use_running_session = self._session and not self._session.closed
-
-        if use_running_session:
+        if use_running_session := self._session and not self._session.closed:
             session = self._session
         else:
             session = ClientSession(timeout=ClientTimeout(total=DEFAULT_TIMEOUT))
-
-        assert session
 
         try:
             async with session.request(

@@ -8,5 +8,5 @@ Fixes https://github.com/bachya/aiopinboard/issues/<ISSUE ID>
 
 - [ ] Confirm that one or more new tests are written for the new functionality.
 - [ ] Run tests and ensure everything passes (with 100% test coverage).
-- [ ] Update `README.md` and `docs/` with any new documentation.
+- [ ] Update `README.md` with any new documentation.
 - [ ] Add yourself to `AUTHORS.md`.
