@@ -1,19 +1,23 @@
 """Test note API endpoints."""
 from datetime import datetime
 
-from aiohttp import ClientSession
 import pytest
 import pytz
+from aiohttp import ClientSession
+from aresponses import ResponsesMockServer
 
 from aiopinboard import API
 from aiopinboard.note import Note
-
 from tests.common import TEST_API_TOKEN, load_fixture
 
 
 @pytest.mark.asyncio
-async def test_get_notes(aresponses):
-    """Test getting notes."""
+async def test_get_notes(aresponses: ResponsesMockServer) -> None:
+    """Test getting notes.
+
+    Args:
+        aresponses: An aresponses server.
+    """
     aresponses.add(
         "api.pinboard.in",
         "/v1/notes/list",

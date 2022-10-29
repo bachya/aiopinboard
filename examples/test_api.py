@@ -15,7 +15,7 @@ async def main() -> None:
     api = API("<PINBOARD_API_TOKEN>")
 
     try:
-        last_change_dt = await api.async_get_last_change_datetime()
+        last_change_dt = await api.bookmark.async_get_last_change_datetime()
         _LOGGER.info(last_change_dt)
     except RequestError as err:
         _LOGGER.info(err)

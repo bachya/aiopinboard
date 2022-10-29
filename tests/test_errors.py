@@ -1,16 +1,20 @@
 """Define tests for errors."""
-from aiohttp import ClientSession
 import pytest
+from aiohttp import ClientSession
+from aresponses import ResponsesMockServer
 
 from aiopinboard import API
 from aiopinboard.errors import RequestError
-
 from tests.common import TEST_API_TOKEN, load_fixture
 
 
 @pytest.mark.asyncio
-async def test_data_error(aresponses):
-    """Test that a Pinboard data error is handled properly."""
+async def test_data_error(aresponses: ResponsesMockServer) -> None:
+    """Test that a Pinboard data error is handled properly.
+
+    Args:
+        aresponses: An aresponses server.
+    """
     aresponses.add(
         "api.pinboard.in",
         "/v1/posts/delete",
@@ -26,8 +30,12 @@ async def test_data_error(aresponses):
 
 
 @pytest.mark.asyncio
-async def test_http_error(aresponses):
-    """Test that an HTTP error is handled properly."""
+async def test_http_error(aresponses: ResponsesMockServer) -> None:
+    """Test that an HTTP error is handled properly.
+
+    Args:
+        aresponses: An aresponses server.
+    """
     aresponses.add(
         "api.pinboard.in",
         "/v1/posts/delete",

@@ -1,15 +1,19 @@
 """Test tag API endpoints."""
-from aiohttp import ClientSession
 import pytest
+from aiohttp import ClientSession
+from aresponses import ResponsesMockServer
 
 from aiopinboard import API
-
 from tests.common import TEST_API_TOKEN, load_fixture
 
 
 @pytest.mark.asyncio
-async def test_delete_tag(aresponses):
-    """Test deleting a tag."""
+async def test_delete_tag(aresponses: ResponsesMockServer) -> None:
+    """Test deleting a tag.
+
+    Args:
+        aresponses: An aresponses server.
+    """
     aresponses.add(
         "api.pinboard.in",
         "/v1/tags/delete",
@@ -26,8 +30,12 @@ async def test_delete_tag(aresponses):
 
 
 @pytest.mark.asyncio
-async def test_get_tags(aresponses):
-    """Test getting tags."""
+async def test_get_tags(aresponses: ResponsesMockServer) -> None:
+    """Test getting tags.
+
+    Args:
+        aresponses: An aresponses server.
+    """
     aresponses.add(
         "api.pinboard.in",
         "/v1/tags/get",
@@ -43,8 +51,12 @@ async def test_get_tags(aresponses):
 
 
 @pytest.mark.asyncio
-async def test_rename_tag(aresponses):
-    """Test renaming a tag."""
+async def test_rename_tag(aresponses: ResponsesMockServer) -> None:
+    """Test renaming a tag.
+
+    Args:
+        aresponses: An aresponses server.
+    """
     aresponses.add(
         "api.pinboard.in",
         "/v1/tags/rename",
