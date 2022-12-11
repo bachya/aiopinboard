@@ -1,17 +1,16 @@
 # 📌 aiopinboard: A Python 3 Library for Pinboard
 
-[![CI](https://github.com/bachya/aiopinboard/workflows/CI/badge.svg)](https://github.com/bachya/aiopinboard/actions)
-[![PyPi](https://img.shields.io/pypi/v/aiopinboard.svg)](https://pypi.python.org/pypi/aiopinboard)
-[![Version](https://img.shields.io/pypi/pyversions/aiopinboard.svg)](https://pypi.python.org/pypi/aiopinboard)
-[![License](https://img.shields.io/pypi/l/aiopinboard.svg)](https://github.com/bachya/aiopinboard/blob/main/LICENSE)
-[![Code Coverage](https://codecov.io/gh/bachya/aiopinboard/branch/dev/graph/badge.svg)](https://codecov.io/gh/bachya/aiopinboard)
-[![Maintainability](https://api.codeclimate.com/v1/badges/a03c9e96f19a3dc37f98/maintainability)](https://codeclimate.com/github/bachya/aiopinboard/maintainability)
-[![Say Thanks](https://img.shields.io/badge/SayThanks-!-1EAEDB.svg)](https://saythanks.io/to/bachya)
+[![CI][ci-badge]][ci]
+[![PyPI][pypi-badge]][pypi]
+[![Version][version-badge]][version]
+[![License][license-badge]][license]
+[![Code Coverage][codecov-badge]][codecov]
+[![Maintainability][maintainability-badge]][maintainability]
 
 <a href="https://www.buymeacoffee.com/bachya1208P" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
 
 `aiopinboard` is a Python3, `asyncio`-focused library for interacting with the
-[Pinboard](https://pinboard.in) API.
+[Pinboard][pinboard] API.
 
 - [Installation](#installation)
 - [Python Versions](#python-versions)
@@ -50,12 +49,12 @@ pip install aiopinboard
 # API Token
 
 You can retrieve your Pinboard API token via
-[your account's settings page](https://pinboard.in/settings/password).
+[your account's settings page][pinboard-settings].
 
 # Usage
 
-`aiopinboard` endeavors to replicate all of the endpoints
-[the Pinboard API documentation](https://pinboard.in/api) with sane, usable responses.
+`aiopinboard` endeavors to replicate all of the endpoints in
+[the Pinboard API documentation][pinboard-api] with sane, usable responses.
 
 All API usage starts with creating an `API` object that contains your Pinboard API token:
 
@@ -377,15 +376,40 @@ asyncio.run(main())
 
 # Contributing
 
-1. [Check for open features/bugs](https://github.com/bachya/aiopinboard/issues)
-   or [initiate a discussion on one](https://github.com/bachya/aiopinboard/issues/new).
-2. [Fork the repository](https://github.com/bachya/aiopinboard/fork).
+Thanks to all of [our contributors][contributors] so far!
+
+1. [Check for open features/bugs][issues] or [initiate a discussion on one][new-issue].
+2. [Fork the repository][fork].
 3. (_optional, but highly recommended_) Create a virtual environment: `python3 -m venv .venv`
 4. (_optional, but highly recommended_) Enter the virtual environment: `source ./.venv/bin/activate`
 5. Install the dev environment: `script/setup`
-6. Code your new feature or bug fix.
+6. Code your new feature or bug fix on a new branch.
 7. Write tests that cover your new functionality.
 8. Run tests and ensure 100% code coverage: `poetry run pytest --cov aiopinboard tests`
 9. Update `README.md` with any new documentation.
-10. Add yourself to `AUTHORS.md`.
-11. Submit a pull request!
+10. Submit a pull request!
+
+[aiohttp]: https://github.com/aio-libs/aiohttp
+[ambient-weather-dashboard]: https://dashboard.ambientweather.net
+[ambient-weather-rate-limiting]: https://ambientweather.docs.apiary.io/#introduction/rate-limiting
+[ambient-weather]: https://ambientweather.net
+[ci-badge]: https://github.com/bachya/aiopinboard/workflows/CI/badge.svg
+[ci]: https://github.com/bachya/aiopinboard/actions
+[codecov-badge]: https://codecov.io/gh/bachya/aiopinboard/branch/dev/graph/badge.svg
+[codecov]: https://codecov.io/gh/bachya/aiopinboard
+[contributors]: https://github.com/bachya/aiopinboard/graphs/contributors
+[fork]: https://github.com/bachya/aiopinboard/fork
+[issues]: https://github.com/bachya/aiopinboard/issues
+[license-badge]: https://img.shields.io/pypi/l/aiopinboard.svg
+[license]: https://github.com/bachya/aiopinboard/blob/main/LICENSE
+[maintainability-badge]: https://api.codeclimate.com/v1/badges/a03c9e96f19a3dc37f98/maintainability
+[maintainability]: https://codeclimate.com/github/bachya/aiopinboard/maintainability
+[new-issue]: https://github.com/bachya/aiopinboard/issues/new
+[new-issue]: https://github.com/bachya/aiopinboard/issues/new
+[pinboard-api]: https://pinboard.in/api
+[pinboard-settings]: https://pinboard.in/settings/password
+[pinboard]: https://pinboard.in
+[pypi-badge]: https://img.shields.io/pypi/v/aiopinboard.svg
+[pypi]: https://pypi.python.org/pypi/aiopinboard
+[version-badge]: https://img.shields.io/pypi/pyversions/aiopinboard.svg
+[version]: https://pypi.python.org/pypi/aiopinboard
