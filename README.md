@@ -402,7 +402,7 @@ Thanks to all of [our contributors][contributors] so far!
 [issues]: https://github.com/bachya/aiopinboard/issues
 [license-badge]: https://img.shields.io/pypi/l/aiopinboard.svg
 [license]: https://github.com/bachya/aiopinboard/blob/main/LICENSE
-[maintainability-badge]: https://api.codeclimate.com/v1/badges/a03c9e96f19a3dc37f98/maintainability
+[maintainability-badge]: https://api.codeclimate.com/v1/badges/4c0360a07493d3c1fd03/maintainability
 [maintainability]: https://codeclimate.com/github/bachya/aiopinboard/maintainability
 [new-issue]: https://github.com/bachya/aiopinboard/issues/new
 [new-issue]: https://github.com/bachya/aiopinboard/issues/new
