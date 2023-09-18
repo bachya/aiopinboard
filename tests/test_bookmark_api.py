@@ -1,9 +1,8 @@
 """Test the API."""
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 import maya
 import pytest
-import pytz
 from aiohttp import ClientSession
 from aresponses import ResponsesMockServer
 
@@ -95,7 +94,7 @@ async def test_get_all_bookmarks(aresponses: ResponsesMockServer) -> None:
             "https://mylink.com",
             "A really neat website!",
             "I saved this bookmark to Pinboard",
-            pytz.utc.localize(datetime(2020, 9, 2, 3, 59, 55)),
+            datetime(2020, 9, 2, 3, 59, 55, tzinfo=timezone.utc),
             tags=["tag1", "tag2"],
             unread=True,
             shared=False,
@@ -133,7 +132,7 @@ async def test_get_bookmark_by_url(aresponses: ResponsesMockServer) -> None:
             "https://mylink.com",
             "A really neat website!",
             "I saved this bookmark to Pinboard",
-            pytz.utc.localize(datetime(2020, 9, 2, 3, 59, 55)),
+            datetime(2020, 9, 2, 3, 59, 55, tzinfo=timezone.utc),
             tags=["tag1", "tag2"],
             unread=True,
             shared=False,
@@ -171,7 +170,7 @@ async def test_get_bookmarks_by_date(aresponses: ResponsesMockServer) -> None:
         api = API(TEST_API_TOKEN, session=session)
 
         bookmarks = await api.bookmark.async_get_bookmarks_by_date(
-            pytz.utc.localize(datetime(2020, 9, 3, 13, 7, 19))
+            datetime(2020, 9, 3, 13, 7, 19, tzinfo=timezone.utc)
         )
         assert len(bookmarks) == 1
         assert bookmarks[0] == Bookmark(
@@ -179,14 +178,14 @@ async def test_get_bookmarks_by_date(aresponses: ResponsesMockServer) -> None:
             "https://mylink.com",
             "A really neat website!",
             "I saved this bookmark to Pinboard",
-            pytz.utc.localize(datetime(2020, 9, 2, 3, 59, 55)),
+            datetime(2020, 9, 2, 3, 59, 55, tzinfo=timezone.utc),
             tags=["tag1", "tag2"],
             unread=True,
             shared=False,
         )
 
         bookmarks = await api.bookmark.async_get_bookmarks_by_date(
-            pytz.utc.localize(datetime(2020, 9, 3, 13, 7, 19)), tags=["non-tag1"]
+            datetime(2020, 9, 3, 13, 7, 19, tzinfo=timezone.utc), tags=["non-tag1"]
         )
         assert not bookmarks
 
@@ -234,7 +233,7 @@ async def test_get_last_change_datetime(aresponses: ResponsesMockServer) -> None
         api = API(TEST_API_TOKEN, session=session)
         most_recent_dt = await api.bookmark.async_get_last_change_datetime()
 
-        assert most_recent_dt == pytz.utc.localize(datetime(2020, 9, 3, 13, 7, 19))
+        assert most_recent_dt == datetime(2020, 9, 3, 13, 7, 19, tzinfo=timezone.utc)
 
 
 @pytest.mark.asyncio
@@ -258,7 +257,7 @@ async def test_get_last_change_datetime_no_session(
     api = API(TEST_API_TOKEN)
     most_recent_dt = await api.bookmark.async_get_last_change_datetime()
 
-    assert most_recent_dt == pytz.utc.localize(datetime(2020, 9, 3, 13, 7, 19))
+    assert most_recent_dt == datetime(2020, 9, 3, 13, 7, 19, tzinfo=timezone.utc)
 
 
 @pytest.mark.asyncio
@@ -287,7 +286,7 @@ async def test_get_recent_bookmarks(aresponses: ResponsesMockServer) -> None:
             "https://mylink.com",
             "A really neat website!",
             "I saved this bookmark to Pinboard",
-            pytz.utc.localize(datetime(2020, 9, 2, 3, 59, 55)),
+            datetime(2020, 9, 2, 3, 59, 55, tzinfo=timezone.utc),
             tags=["tag1", "tag2"],
             unread=True,
             shared=False,
