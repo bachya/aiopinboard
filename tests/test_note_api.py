@@ -1,8 +1,7 @@
 """Test note API endpoints."""
-from datetime import datetime
+from datetime import datetime, timezone
 
 import pytest
-import pytz
 from aiohttp import ClientSession
 from aresponses import ResponsesMockServer
 
@@ -34,7 +33,7 @@ async def test_get_notes(aresponses: ResponsesMockServer) -> None:
             "xxxxxxxxxxxxxxxxxxxx",
             "Test",
             "xxxxxxxxxxxxxxxxxxxx",
-            pytz.utc.localize(datetime(2020, 9, 6, 5, 59, 47)),
-            pytz.utc.localize(datetime(2020, 9, 6, 5, 59, 47)),
+            datetime(2020, 9, 6, 5, 59, 47, tzinfo=timezone.utc),
+            datetime(2020, 9, 6, 5, 59, 47, tzinfo=timezone.utc),
             14,
         )
