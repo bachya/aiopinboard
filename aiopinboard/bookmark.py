@@ -58,7 +58,7 @@ class BookmarkAPI:
         """
         self._async_request = async_request
 
-    async def async_add_bookmark(
+    async def async_add_bookmark(  # pylint: disable=too-many-arguments
         self,
         url: str,
         title: str,
@@ -105,7 +105,7 @@ class BookmarkAPI:
         """
         await self._async_request("get", "posts/delete", params={"url": url})
 
-    async def async_get_all_bookmarks(
+    async def async_get_all_bookmarks(  # pylint: disable=too-many-arguments
         self,
         *,
         tags: list[str] | None = None,
