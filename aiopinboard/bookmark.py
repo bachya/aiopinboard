@@ -43,7 +43,7 @@ def async_create_bookmark_from_xml(tree: ElementTree) -> Bookmark:
         maya.parse(tree.attrib["time"]).datetime(),
         tree.attrib["tag"].split(),
         tree.attrib.get("toread") == "yes",
-        tree.attrib.get("shared") == "yes",
+        tree.attrib.get("shared") != "no",
     )
 
 
