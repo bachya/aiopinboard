@@ -61,7 +61,7 @@ All API usage starts with creating an `API` object that contains your Pinboard A
 ```python
 import asyncio
 
-from aiopinboard import Client
+from aiopinboard import API
 
 
 async def main() -> None:
@@ -95,7 +95,7 @@ To get the UTC datetime of the last "change" (bookmark added, updated, or delete
 ```python
 import asyncio
 
-from aiopinboard import Client
+from aiopinboard import API
 
 
 async def main() -> None:
@@ -119,7 +119,7 @@ To get a bookmark by its URL:
 ```python
 import asyncio
 
-from aiopinboard import Client
+from aiopinboard import API
 
 
 async def main() -> None:
@@ -136,7 +136,7 @@ To get all bookmarks
 ```python
 import asyncio
 
-from aiopinboard import Client
+from aiopinboard import API
 
 
 async def main() -> None:
@@ -162,7 +162,7 @@ To get all bookmarks created on a certain date:
 import asyncio
 from datetime import date
 
-from aiopinboard import Client
+from aiopinboard import API
 
 
 async def main() -> None:
@@ -185,7 +185,7 @@ To get recent bookmarks:
 ```python
 import asyncio
 
-from aiopinboard import Client
+from aiopinboard import API
 
 
 async def main() -> None:
@@ -207,7 +207,7 @@ To get a summary of dates and how many bookmarks were created on those dates:
 ```python
 import asyncio
 
-from aiopinboard import Client
+from aiopinboard import API
 
 
 async def main() -> None:
@@ -226,7 +226,7 @@ To add a bookmark:
 ```python
 import asyncio
 
-from aiopinboard import Client
+from aiopinboard import API
 
 
 async def main() -> None:
@@ -253,7 +253,7 @@ To delete a bookmark by its URL:
 ```python
 import asyncio
 
-from aiopinboard import Client
+from aiopinboard import API
 
 
 async def main() -> None:
@@ -273,7 +273,7 @@ To get all tags for an account (and a count of how often each tag is used):
 ```python
 import asyncio
 
-from aiopinboard import Client
+from aiopinboard import API
 
 
 async def main() -> None:
@@ -293,7 +293,7 @@ particular URL:
 ```python
 import asyncio
 
-from aiopinboard import Client
+from aiopinboard import API
 
 
 async def main() -> None:
@@ -312,7 +312,7 @@ To delete a tag:
 ```python
 import asyncio
 
-from aiopinboard import Client
+from aiopinboard import API
 
 
 async def main() -> None:
@@ -330,7 +330,7 @@ To rename a tag:
 ```python
 import asyncio
 
-from aiopinboard import Client
+from aiopinboard import API
 
 
 async def main() -> None:
@@ -362,7 +362,7 @@ To get all notes for an account:
 ```python
 import asyncio
 
-from aiopinboard import Client
+from aiopinboard import API
 
 
 async def main() -> None:
