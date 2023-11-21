@@ -148,7 +148,7 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
-You can specify several optional parameters while editing a bookmark:
+You can specify several optional parameters while getting all bookmarks:
 
 - `tags`: an optional list of tags to filter results by
 - `start`: the optional starting index to return (defaults to the start)
@@ -237,7 +237,7 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
-You can specify several optional parameters while editing a bookmark:
+You can specify several optional parameters while adding a bookmark:
 
 - `description`: the optional description of the bookmark
 - `tags`: an optional list of tags to assign to the bookmark
