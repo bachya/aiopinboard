@@ -101,7 +101,7 @@ from aiopinboard import API
 async def main() -> None:
     """Run!"""
     api = API("<PINBOARD_API_TOKEN>")
-    last_change_dt = await async_get_last_change_datetime()
+    last_change_dt = await api.bookmark.async_get_last_change_datetime()
     # >>> datetime.datetime(2020, 9, 3, 13, 7, 19, tzinfo=<UTC>)
 
 
