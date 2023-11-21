@@ -135,7 +135,7 @@ class BookmarkAPI:
         if from_dt:
             params["fromdt"] = from_dt.isoformat()
         if to_dt:
-            params["fromdt"] = to_dt.isoformat()
+            params["todt"] = to_dt.isoformat()
 
         resp = await self._async_request("get", "posts/all", params=params)
         return [async_create_bookmark_from_xml(bookmark) for bookmark in resp]
