@@ -80,6 +80,7 @@ async def test_get_all_bookmarks(aresponses: ResponsesMockServer) -> None:
 
     async with ClientSession() as session:
         api = API(TEST_API_TOKEN, session=session)
+
         # The test's fixture static date for the returned bookmark.
         fixture_bookmark_date = datetime.strptime("2020-09-02T03:59:55Z", "%Y-%m-%dT%H:%M:%SZ")
         bookmarks = await api.bookmark.async_get_all_bookmarks(
