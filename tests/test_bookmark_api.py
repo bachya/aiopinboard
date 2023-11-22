@@ -81,12 +81,17 @@ async def test_get_all_bookmarks(aresponses: ResponsesMockServer) -> None:
     async with ClientSession() as session:
         api = API(TEST_API_TOKEN, session=session)
 
+        # Define a static datetime to test against:
+        fixture_bookmark_date = datetime.strptime(
+            "2020-09-02T03:59:55Z", "%Y-%m-%dT%H:%M:%SZ"
+        )
         bookmarks = await api.bookmark.async_get_all_bookmarks(
             tags=["tag1"],
             start=2,
             results=1,
-            from_dt=datetime.now(),
-            to_dt=datetime.now() + timedelta(days=2),
+            # It is implied that `from_dt <= to_dt` and `from_dt <= posts <= to_dt`:
+            from_dt=fixture_bookmark_date - timedelta(days=2),
+            to_dt=fixture_bookmark_date + timedelta(days=1),
         )
         assert len(bookmarks) == 1
         assert bookmarks[0] == Bookmark(
