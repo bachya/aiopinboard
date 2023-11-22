@@ -89,7 +89,7 @@ async def test_get_all_bookmarks(aresponses: ResponsesMockServer) -> None:
             tags=["tag1"],
             start=2,
             results=1,
-            # It is implied that `from_dt <= to_dt` and `from_dt <= posts <= to_dt`.
+            # It is implied that `from_dt <= to_dt` and `from_dt <= posts <= to_dt`:
             from_dt=fixture_bookmark_date - timedelta(days=2),
             to_dt=fixture_bookmark_date + timedelta(days=1),
         )
