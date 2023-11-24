@@ -85,7 +85,7 @@ class BookmarkAPI:
         params: dict[str, Any] = {"url": url, "description": title}
 
         if description:
-            params["description"] = description
+            params["extended"] = description
         if tags:
             params["tags"] = tags
         if created_datetime:
