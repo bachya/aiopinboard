@@ -4,9 +4,9 @@ from __future__ import annotations
 from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
 from datetime import date, datetime
-from typing import Any, cast
+from typing import Any
 
-import maya
+import arrow
 from defusedxml import ElementTree
 
 DEFAULT_RECENT_BOOKMARKS_COUNT: int = 15
@@ -40,7 +40,7 @@ def async_create_bookmark_from_xml(tree: ElementTree) -> Bookmark:
         tree.attrib["href"],
         tree.attrib["description"],
         tree.attrib["extended"],
-        maya.parse(tree.attrib["time"]).datetime(),
+        arrow.get(tree.attrib["time"]).datetime,
         tree.attrib["tag"].split(),
         tree.attrib.get("toread") == "yes",
         tree.attrib.get("shared") != "no",
@@ -195,7 +195,7 @@ class BookmarkAPI:
         resp = await self._async_request("get", "posts/dates")
 
         return {
-            maya.parse(row.attrib["date"]).datetime().date(): int(row.attrib["count"])
+            arrow.get(row.attrib["date"]).datetime.date(): int(row.attrib["count"])
             for row in resp
         }
 
@@ -206,8 +206,8 @@ class BookmarkAPI:
             A datetime object.
         """
         resp = await self._async_request("get", "posts/update")
-        maya_dt = maya.parse(resp.attrib["time"])
-        return cast(datetime, maya_dt.datetime())
+        parsed = arrow.get(resp.attrib["time"])
+        return parsed.datetime
 
     async def async_get_recent_bookmarks(
         self,
