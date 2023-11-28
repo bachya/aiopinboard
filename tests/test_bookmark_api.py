@@ -1,7 +1,7 @@
 """Test the API."""
 from datetime import datetime, timedelta, timezone
 
-import maya
+import arrow
 import pytest
 from aiohttp import ClientSession
 from aresponses import ResponsesMockServer
@@ -214,9 +214,9 @@ async def test_get_dates(aresponses: ResponsesMockServer) -> None:
 
         dates = await api.bookmark.async_get_dates(tags=["tag1", "tag2"])
         assert dates == {
-            maya.parse("2020-09-05").datetime().date(): 1,
-            maya.parse("2020-09-04").datetime().date(): 1,
-            maya.parse("2020-09-03").datetime().date(): 3,
+            arrow.get("2020-09-05").datetime.date(): 1,
+            arrow.get("2020-09-04").datetime.date(): 1,
+            arrow.get("2020-09-03").datetime.date(): 3,
         }
 
 

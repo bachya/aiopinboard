@@ -5,7 +5,7 @@ from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
 from datetime import datetime
 
-import maya
+import arrow
 from defusedxml import ElementTree
 
 
@@ -34,8 +34,8 @@ def async_create_note_from_xml(tree: ElementTree) -> Note:
         tree.attrib["id"],
         tree[0].text,
         tree[1].text,
-        maya.parse(tree[2].text).datetime(),
-        maya.parse(tree[3].text).datetime(),
+        arrow.get(tree[2].text).datetime,
+        arrow.get(tree[3].text).datetime,
         int(tree[4].text),
     )
 
