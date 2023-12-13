@@ -87,7 +87,7 @@ class BookmarkAPI:
         if description:
             params["extended"] = description
         if tags:
-            params["tags"] = tags
+            params["tags"] = " ".join(tags)
         if created_datetime:
             params["dt"] = created_datetime.isoformat()
 
