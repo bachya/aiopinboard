@@ -2,14 +2,15 @@
 from __future__ import annotations
 
 from collections.abc import Awaitable, Callable
+from typing import cast
 
-from defusedxml import ElementTree
+from aiopinboard.helpers.types import ResponseType
 
 
 class TagAPI:
     """Define a tag "manager" object."""
 
-    def __init__(self, async_request: Callable[..., Awaitable[ElementTree]]) -> None:
+    def __init__(self, async_request: Callable[..., Awaitable[ResponseType]]) -> None:
         """Initialize.
 
         Args:
@@ -31,8 +32,7 @@ class TagAPI:
         Returns:
             A dictionary of tags and usage count.
         """
-        resp = await self._async_request("get", "tags/get")
-        return {tag.attrib["tag"]: int(tag.attrib["count"]) for tag in resp}
+        return cast(dict[str, int], await self._async_request("get", "tags/get"))
 
     async def async_rename_tag(self, old: str, new: str) -> None:
         """Rename a tag.
