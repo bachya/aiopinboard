@@ -4,9 +4,11 @@ from __future__ import annotations
 from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
 from datetime import datetime
+from typing import Any, cast
 
 import arrow
-from defusedxml import ElementTree
+
+from aiopinboard.helpers.types import DictType, ResponseType
 
 
 @dataclass
@@ -20,30 +22,30 @@ class Note:  # pylint: disable=too-many-instance-attributes
     updated_at: datetime
     length: int
 
+    @classmethod
+    def from_api_response(cls, data: dict[str, Any]) -> Note:
+        """Create a note from an API response.
 
-def async_create_note_from_xml(tree: ElementTree) -> Note:
-    """Create a note from an XML response.
+        Args:
+            data: The API response data.
 
-    Args:
-        tree: A parsed XML tree.
-
-    Returns:
-        A Note object.
-    """
-    return Note(
-        tree.attrib["id"],
-        tree[0].text,
-        tree[1].text,
-        arrow.get(tree[2].text).datetime,
-        arrow.get(tree[3].text).datetime,
-        int(tree[4].text),
-    )
+        Returns:
+            A Note object.
+        """
+        return cls(
+            data["id"],
+            data["title"],
+            data["hash"],
+            arrow.get(data["created_at"]).datetime,
+            arrow.get(data["updated_at"]).datetime,
+            data["length"],
+        )
 
 
 class NoteAPI:  # pylint: disable=too-few-public-methods
     """Define a note "manager" object."""
 
-    def __init__(self, async_request: Callable[..., Awaitable[ElementTree]]) -> None:
+    def __init__(self, async_request: Callable[..., Awaitable[ResponseType]]) -> None:
         """Initialize.
 
         Args:
@@ -57,5 +59,5 @@ class NoteAPI:  # pylint: disable=too-few-public-methods
         Returns:
             A list of Note objects.
         """
-        resp = await self._async_request("get", "notes/list")
-        return [async_create_note_from_xml(note) for note in resp]
+        data = cast(DictType, await self._async_request("get", "notes/list"))
+        return [Note.from_api_response(note) for note in data["notes"]]

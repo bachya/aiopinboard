@@ -4,10 +4,11 @@ from __future__ import annotations
 from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
 from datetime import date, datetime
-from typing import Any
+from typing import Any, cast
 
 import arrow
-from defusedxml import ElementTree
+
+from aiopinboard.helpers.types import DictType, ListDictType, ResponseType
 
 DEFAULT_RECENT_BOOKMARKS_COUNT: int = 15
 
@@ -25,32 +26,32 @@ class Bookmark:
     unread: bool
     shared: bool
 
+    @classmethod
+    def from_api_response(cls, data: dict[str, Any]) -> Bookmark:
+        """Create a bookmark from an API response.
 
-def async_create_bookmark_from_xml(tree: ElementTree) -> Bookmark:
-    """Create a bookmark from an XML response.
+        Args:
+            data: The API response data.
 
-    Args:
-        tree: A parsed XML tree.
-
-    Returns:
-        A Bookmark object.
-    """
-    return Bookmark(
-        tree.attrib["hash"],
-        tree.attrib["href"],
-        tree.attrib["description"],
-        tree.attrib["extended"],
-        arrow.get(tree.attrib["time"]).datetime,
-        tree.attrib["tag"].split(),
-        tree.attrib.get("toread") == "yes",
-        tree.attrib.get("shared") != "no",
-    )
+        Returns:
+            A Bookmark object.
+        """
+        return Bookmark(
+            data["hash"],
+            data["href"],
+            data["description"],
+            data["extended"],
+            arrow.get(data["time"]).datetime,
+            data["tags"].split(),
+            data["toread"] == "yes",
+            data["shared"] != "no",
+        )
 
 
 class BookmarkAPI:
     """Define an API "manager" object."""
 
-    def __init__(self, async_request: Callable[..., Awaitable[ElementTree]]) -> None:
+    def __init__(self, async_request: Callable[..., Awaitable[ResponseType]]):
         """Initialize.
 
         Args:
@@ -137,8 +138,10 @@ class BookmarkAPI:
         if to_dt:
             params["todt"] = to_dt.isoformat()
 
-        resp = await self._async_request("get", "posts/all", params=params)
-        return [async_create_bookmark_from_xml(bookmark) for bookmark in resp]
+        data = cast(
+            ListDictType, await self._async_request("get", "posts/all", params=params)
+        )
+        return [Bookmark.from_api_response(bookmark) for bookmark in data]
 
     async def async_get_bookmark_by_url(self, url: str) -> Bookmark | None:
         """Get bookmark by a URL.
@@ -149,10 +152,12 @@ class BookmarkAPI:
         Returns:
             A bookmark object (or None if no bookmark exists for the URL).
         """
-        resp = await self._async_request("get", "posts/get", params={"url": url})
+        data = cast(
+            DictType, await self._async_request("get", "posts/get", params={"url": url})
+        )
 
         try:
-            return async_create_bookmark_from_xml(resp[0])
+            return Bookmark.from_api_response(data["posts"][0])
         except IndexError:
             return None
 
@@ -173,8 +178,10 @@ class BookmarkAPI:
         if tags:
             params["tags"] = " ".join([str(tag) for tag in tags])
 
-        resp = await self._async_request("get", "posts/get", params=params)
-        return [async_create_bookmark_from_xml(bookmark) for bookmark in resp]
+        data = cast(
+            DictType, await self._async_request("get", "posts/get", params=params)
+        )
+        return [Bookmark.from_api_response(bookmark) for bookmark in data["posts"]]
 
     async def async_get_dates(
         self, *, tags: list[str] | None = None
@@ -192,11 +199,11 @@ class BookmarkAPI:
         if tags:
             params["tags"] = " ".join([str(tag) for tag in tags])
 
-        resp = await self._async_request("get", "posts/dates")
+        data = cast(DictType, await self._async_request("get", "posts/dates"))
 
         return {
-            arrow.get(row.attrib["date"]).datetime.date(): int(row.attrib["count"])
-            for row in resp
+            arrow.get(date).datetime.date(): count
+            for date, count in data["dates"].items()
         }
 
     async def async_get_last_change_datetime(self) -> datetime:
@@ -205,8 +212,8 @@ class BookmarkAPI:
         Returns:
             A datetime object.
         """
-        resp = await self._async_request("get", "posts/update")
-        parsed = arrow.get(resp.attrib["time"])
+        data = cast(DictType, await self._async_request("get", "posts/update"))
+        parsed = arrow.get(data["update_time"])
         return parsed.datetime
 
     async def async_get_recent_bookmarks(
@@ -229,8 +236,10 @@ class BookmarkAPI:
         if tags:
             params["tags"] = " ".join([str(tag) for tag in tags])
 
-        resp = await self._async_request("get", "posts/recent", params=params)
-        return [async_create_bookmark_from_xml(bookmark) for bookmark in resp]
+        data = cast(
+            DictType, await self._async_request("get", "posts/recent", params=params)
+        )
+        return [Bookmark.from_api_response(bookmark) for bookmark in data["posts"]]
 
     async def async_get_suggested_tags(self, url: str) -> dict[str, list[str]]:
         """Return a dictionary of popular and recommended tags for a URL.
@@ -241,11 +250,8 @@ class BookmarkAPI:
         Returns:
             A dictionary of tags.
         """
-        data: dict[str, list[str]] = {"popular": [], "recommended": []}
-
-        resp = await self._async_request("get", "posts/suggest", params={"url": url})
-        for tag in resp:
-            if tag.text not in data[tag.tag]:
-                data[tag.tag].append(tag.text)
-
-        return data
+        data = cast(
+            ListDictType,
+            await self._async_request("get", "posts/suggest", params={"url": url}),
+        )
+        return {k: v for d in data for k, v in d.items()}

@@ -1,7 +1,7 @@
 """Define exception types for ``aiopinboard``."""
 from __future__ import annotations
 
-from defusedxml import ElementTree
+from aiopinboard.helpers.types import ResponseType
 
 
 class PinboardError(Exception):
@@ -16,19 +16,22 @@ class RequestError(PinboardError):
     pass
 
 
-def raise_on_response_error(response_root: ElementTree) -> None:
+def raise_on_response_error(data: ResponseType) -> None:
     """Raise an error if the data indicates that something went wrong.
 
     Args:
-        response_root: A parsed XML tree.
+        data: A response payload from the API.
 
     Raises:
         RequestError: Raised upon any error from the API.
     """
-    if "code" not in response_root.attrib:
+    if isinstance(data, list):
         return
 
-    if response_root.attrib["code"] == "done":
+    if (code := data.get("result_code")) is None:
         return
 
-    raise RequestError(response_root.attrib["code"])
+    if code == "done":
+        return
+
+    raise RequestError(code)

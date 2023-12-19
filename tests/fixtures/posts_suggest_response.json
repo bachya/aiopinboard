@@ -1,0 +1,8 @@
+[
+  {
+    "popular": ["linux", "ssh"]
+  },
+  {
+    "recommended": ["ssh", "linux"]
+  }
+]

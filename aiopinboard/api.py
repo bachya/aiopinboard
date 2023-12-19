@@ -2,14 +2,14 @@
 from __future__ import annotations
 
 import logging
-from typing import Any
+from typing import Any, cast
 
 from aiohttp import ClientSession, ClientTimeout
 from aiohttp.client_exceptions import ClientError
-from defusedxml import ElementTree
 
 from aiopinboard.bookmark import BookmarkAPI
 from aiopinboard.errors import RequestError, raise_on_response_error
+from aiopinboard.helpers.types import ResponseType
 from aiopinboard.note import NoteAPI
 from aiopinboard.tag import TagAPI
 
@@ -45,7 +45,7 @@ class API:  # pylint: disable=too-few-public-methods
 
     async def _async_request(
         self, method: str, endpoint: str, **kwargs: dict[str, Any]
-    ) -> ElementTree:
+    ) -> ResponseType:
         """Make a request to the API and return the XML response.
 
         Args:
@@ -61,6 +61,7 @@ class API:  # pylint: disable=too-few-public-methods
         """
         kwargs.setdefault("params", {})
         kwargs["params"]["auth_token"] = self._api_token
+        kwargs["params"]["format"] = "json"
 
         if use_running_session := self._session and not self._session.closed:
             session = self._session
@@ -72,14 +73,13 @@ class API:  # pylint: disable=too-few-public-methods
                 method, f"{API_URL_BASE}/{endpoint}", **kwargs
             ) as resp:
                 resp.raise_for_status()
-                body = await resp.text()
+                data = await resp.json()
 
-                _LOGGER.debug("Response text for %s: %s", endpoint, body)
+                _LOGGER.debug("Response data for %s: %s", endpoint, data)
 
-                response_root = ElementTree.fromstring(body.encode("utf-8"))
-                raise_on_response_error(response_root)
+                raise_on_response_error(data)
 
-                return response_root
+                return cast(ResponseType, data)
         except ClientError as err:
             raise RequestError(err) from None
         finally:
