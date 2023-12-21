@@ -26,7 +26,9 @@ async def test_add_bookmark(
         "api.pinboard.in",
         "/v1/posts/add",
         "get",
-        response=aiohttp.web_response.json_response(posts_add_response, status=200),
+        response=aiohttp.web_response.json_response(
+            posts_add_response, content_type="text/json", status=200
+        ),
     )
 
     async with aiohttp.ClientSession() as session:
@@ -60,7 +62,9 @@ async def test_delete_bookmark(
         "api.pinboard.in",
         "/v1/posts/delete",
         "get",
-        response=aiohttp.web_response.json_response(posts_delete_response, status=200),
+        response=aiohttp.web_response.json_response(
+            posts_delete_response, content_type="text/json", status=200
+        ),
     )
 
     async with aiohttp.ClientSession() as session:
@@ -85,7 +89,9 @@ async def test_get_all_bookmarks(
         "api.pinboard.in",
         "/v1/posts/all",
         "get",
-        response=aiohttp.web_response.json_response(posts_all_response, status=200),
+        response=aiohttp.web_response.json_response(
+            posts_all_response, content_type="text/json", status=200
+        ),
     )
 
     async with aiohttp.ClientSession() as session:
@@ -133,14 +139,16 @@ async def test_get_bookmark_by_url(
         "api.pinboard.in",
         "/v1/posts/get",
         "get",
-        response=aiohttp.web_response.json_response(posts_get_response, status=200),
+        response=aiohttp.web_response.json_response(
+            posts_get_response, content_type="text/json", status=200
+        ),
     )
     aresponses.add(
         "api.pinboard.in",
         "/v1/posts/get",
         "get",
         response=aiohttp.web_response.json_response(
-            posts_get_empty_response, status=200
+            posts_get_empty_response, content_type="text/json", status=200
         ),
     )
 
@@ -182,14 +190,16 @@ async def test_get_bookmarks_by_date(
         "api.pinboard.in",
         "/v1/posts/get",
         "get",
-        response=aiohttp.web_response.json_response(posts_get_response, status=200),
+        response=aiohttp.web_response.json_response(
+            posts_get_response, content_type="text/json", status=200
+        ),
     )
     aresponses.add(
         "api.pinboard.in",
         "/v1/posts/get",
         "get",
         response=aiohttp.web_response.json_response(
-            posts_get_empty_response, status=200
+            posts_get_empty_response, content_type="text/json", status=200
         ),
     )
 
@@ -231,7 +241,9 @@ async def test_get_dates(
         "api.pinboard.in",
         "/v1/posts/dates",
         "get",
-        response=aiohttp.web_response.json_response(posts_dates_response, status=200),
+        response=aiohttp.web_response.json_response(
+            posts_dates_response, content_type="text/json", status=200
+        ),
     )
 
     async with aiohttp.ClientSession() as session:
@@ -259,7 +271,9 @@ async def test_get_last_change_datetime(
         "api.pinboard.in",
         "/v1/posts/update",
         "get",
-        response=aiohttp.web_response.json_response(posts_update_response, status=200),
+        response=aiohttp.web_response.json_response(
+            posts_update_response, content_type="text/json", status=200
+        ),
     )
 
     async with aiohttp.ClientSession() as session:
@@ -285,7 +299,9 @@ async def test_get_last_change_datetime_no_session(
         "api.pinboard.in",
         "/v1/posts/update",
         "get",
-        response=aiohttp.web_response.json_response(posts_update_response, status=200),
+        response=aiohttp.web_response.json_response(
+            posts_update_response, content_type="text/json", status=200
+        ),
     )
 
     api = API(TEST_API_TOKEN)
@@ -308,7 +324,9 @@ async def test_get_recent_bookmarks(
         "api.pinboard.in",
         "/v1/posts/recent",
         "get",
-        response=aiohttp.web_response.json_response(posts_recent_response, status=200),
+        response=aiohttp.web_response.json_response(
+            posts_recent_response, content_type="text/json", status=200
+        ),
     )
 
     async with aiohttp.ClientSession() as session:
@@ -344,7 +362,9 @@ async def test_get_suggested_tags(
         "api.pinboard.in",
         "/v1/posts/suggest",
         "get",
-        response=aiohttp.web_response.json_response(posts_suggest_response, status=200),
+        response=aiohttp.web_response.json_response(
+            posts_suggest_response, content_type="text/json", status=200
+        ),
     )
 
     async with aiohttp.ClientSession() as session:

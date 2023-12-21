@@ -25,7 +25,9 @@ async def test_get_notes(
         "api.pinboard.in",
         "/v1/notes/list",
         "get",
-        response=aiohttp.web_response.json_response(notes_get_response, status=200),
+        response=aiohttp.web_response.json_response(
+            notes_get_response, content_type="text/json", status=200
+        ),
     )
 
     async with aiohttp.ClientSession() as session:
