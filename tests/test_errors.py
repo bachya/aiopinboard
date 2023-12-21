@@ -24,7 +24,9 @@ async def test_data_error(
         "api.pinboard.in",
         "/v1/posts/delete",
         "get",
-        response=aiohttp.web_response.json_response(error_response, status=200),
+        response=aiohttp.web_response.json_response(
+            error_response, content_type="text/json", status=200
+        ),
     )
 
     async with aiohttp.ClientSession() as session:

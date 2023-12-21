@@ -23,7 +23,9 @@ async def test_delete_tag(
         "api.pinboard.in",
         "/v1/tags/delete",
         "get",
-        response=aiohttp.web_response.json_response(tags_delete_response, status=200),
+        response=aiohttp.web_response.json_response(
+            tags_delete_response, content_type="text/json", status=200
+        ),
     )
 
     async with aiohttp.ClientSession() as session:
@@ -48,7 +50,9 @@ async def test_get_tags(
         "api.pinboard.in",
         "/v1/tags/get",
         "get",
-        response=aiohttp.web_response.json_response(tags_get_response, status=200),
+        response=aiohttp.web_response.json_response(
+            tags_get_response, content_type="text/json", status=200
+        ),
     )
 
     async with aiohttp.ClientSession() as session:
@@ -72,7 +76,9 @@ async def test_rename_tag(
         "api.pinboard.in",
         "/v1/tags/rename",
         "get",
-        response=aiohttp.web_response.json_response(tags_rename_response, status=200),
+        response=aiohttp.web_response.json_response(
+            tags_rename_response, content_type="text/json", status=200
+        ),
     )
 
     async with aiohttp.ClientSession() as session:
