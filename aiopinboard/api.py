@@ -73,7 +73,7 @@ class API:  # pylint: disable=too-few-public-methods
                 method, f"{API_URL_BASE}/{endpoint}", **kwargs
             ) as resp:
                 resp.raise_for_status()
-                data = await resp.json()
+                data = await resp.json(content_type="text/json")
 
                 _LOGGER.debug("Response data for %s: %s", endpoint, data)
 
