@@ -1,27 +1,34 @@
 """Test tag API endpoints."""
+from typing import Any
+
+import aiohttp
 import pytest
-from aiohttp import ClientSession
 from aresponses import ResponsesMockServer
 
 from aiopinboard import API
-from tests.common import TEST_API_TOKEN, load_fixture
+from tests.common import TEST_API_TOKEN
 
 
 @pytest.mark.asyncio
-async def test_delete_tag(aresponses: ResponsesMockServer) -> None:
+async def test_delete_tag(
+    aresponses: ResponsesMockServer, tags_delete_response: dict[str, Any]
+) -> None:
     """Test deleting a tag.
 
     Args:
         aresponses: An aresponses server.
+        tags_delete_response: A fixture for a tags/delete response payload.
     """
     aresponses.add(
         "api.pinboard.in",
         "/v1/tags/delete",
         "get",
-        aresponses.Response(text=load_fixture("tags_delete_response.xml"), status=200),
+        response=aiohttp.web_response.json_response(
+            tags_delete_response, content_type="text/json", status=200
+        ),
     )
 
-    async with ClientSession() as session:
+    async with aiohttp.ClientSession() as session:
         api = API(TEST_API_TOKEN, session=session)
 
         # A unsuccessful request will throw an exception, so if no exception is thrown,
@@ -30,20 +37,25 @@ async def test_delete_tag(aresponses: ResponsesMockServer) -> None:
 
 
 @pytest.mark.asyncio
-async def test_get_tags(aresponses: ResponsesMockServer) -> None:
+async def test_get_tags(
+    aresponses: ResponsesMockServer, tags_get_response: dict[str, Any]
+) -> None:
     """Test getting tags.
 
     Args:
         aresponses: An aresponses server.
+        tags_get_response: A fixture for a tags/get response payload.
     """
     aresponses.add(
         "api.pinboard.in",
         "/v1/tags/get",
         "get",
-        aresponses.Response(text=load_fixture("tags_get_response.xml"), status=200),
+        response=aiohttp.web_response.json_response(
+            tags_get_response, content_type="text/json", status=200
+        ),
     )
 
-    async with ClientSession() as session:
+    async with aiohttp.ClientSession() as session:
         api = API(TEST_API_TOKEN, session=session)
 
         tags = await api.tag.async_get_tags()
@@ -51,20 +63,25 @@ async def test_get_tags(aresponses: ResponsesMockServer) -> None:
 
 
 @pytest.mark.asyncio
-async def test_rename_tag(aresponses: ResponsesMockServer) -> None:
+async def test_rename_tag(
+    aresponses: ResponsesMockServer, tags_rename_response: dict[str, Any]
+) -> None:
     """Test renaming a tag.
 
     Args:
         aresponses: An aresponses server.
+        tags_rename_response: A fixture for a tags/rename response payload.
     """
     aresponses.add(
         "api.pinboard.in",
         "/v1/tags/rename",
         "get",
-        aresponses.Response(text=load_fixture("tags_rename_response.xml"), status=200),
+        response=aiohttp.web_response.json_response(
+            tags_rename_response, content_type="text/json", status=200
+        ),
     )
 
-    async with ClientSession() as session:
+    async with aiohttp.ClientSession() as session:
         api = API(TEST_API_TOKEN, session=session)
 
         # A unsuccessful request will throw an exception, so if no exception is thrown,

@@ -1,31 +1,37 @@
 """Test the API."""
 from datetime import datetime, timedelta, timezone
+from typing import Any
 
+import aiohttp
 import arrow
 import pytest
-from aiohttp import ClientSession
 from aresponses import ResponsesMockServer
 
 from aiopinboard import API
 from aiopinboard.bookmark import Bookmark
-from tests.common import TEST_API_TOKEN, load_fixture
+from tests.common import TEST_API_TOKEN
 
 
 @pytest.mark.asyncio
-async def test_add_bookmark(aresponses: ResponsesMockServer) -> None:
+async def test_add_bookmark(
+    aresponses: ResponsesMockServer, posts_add_response: dict[str, Any]
+) -> None:
     """Test deleting a bookmark.
 
     Args:
         aresponses: An aresponses server.
+        posts_add_response: A fixture for a posts/add response payload.
     """
     aresponses.add(
         "api.pinboard.in",
         "/v1/posts/add",
         "get",
-        aresponses.Response(text=load_fixture("posts_add_response.xml"), status=200),
+        response=aiohttp.web_response.json_response(
+            posts_add_response, content_type="text/json", status=200
+        ),
     )
 
-    async with ClientSession() as session:
+    async with aiohttp.ClientSession() as session:
         api = API(TEST_API_TOKEN, session=session)
 
         # A unsuccessful request will throw an exception, so if no exception is thrown,
@@ -43,20 +49,25 @@ async def test_add_bookmark(aresponses: ResponsesMockServer) -> None:
 
 
 @pytest.mark.asyncio
-async def test_delete_bookmark(aresponses: ResponsesMockServer) -> None:
+async def test_delete_bookmark(
+    aresponses: ResponsesMockServer, posts_delete_response: dict[str, Any]
+) -> None:
     """Test deleting a bookmark.
 
     Args:
         aresponses: An aresponses server.
+        posts_delete_response: A fixture for a posts/delete response payload.
     """
     aresponses.add(
         "api.pinboard.in",
         "/v1/posts/delete",
         "get",
-        aresponses.Response(text=load_fixture("posts_delete_response.xml"), status=200),
+        response=aiohttp.web_response.json_response(
+            posts_delete_response, content_type="text/json", status=200
+        ),
     )
 
-    async with ClientSession() as session:
+    async with aiohttp.ClientSession() as session:
         api = API(TEST_API_TOKEN, session=session)
 
         # A unsuccessful request will throw an exception, so if no exception is thrown,
@@ -65,20 +76,25 @@ async def test_delete_bookmark(aresponses: ResponsesMockServer) -> None:
 
 
 @pytest.mark.asyncio
-async def test_get_all_bookmarks(aresponses: ResponsesMockServer) -> None:
+async def test_get_all_bookmarks(
+    aresponses: ResponsesMockServer, posts_all_response: dict[str, Any]
+) -> None:
     """Test getting recent bookmarks.
 
     Args:
         aresponses: An aresponses server.
+        posts_all_response: A fixture for a posts/all response payload.
     """
     aresponses.add(
         "api.pinboard.in",
         "/v1/posts/all",
         "get",
-        aresponses.Response(text=load_fixture("posts_all_response.xml"), status=200),
+        response=aiohttp.web_response.json_response(
+            posts_all_response, content_type="text/json", status=200
+        ),
     )
 
-    async with ClientSession() as session:
+    async with aiohttp.ClientSession() as session:
         api = API(TEST_API_TOKEN, session=session)
 
         # Define a static datetime to test against:
@@ -107,28 +123,36 @@ async def test_get_all_bookmarks(aresponses: ResponsesMockServer) -> None:
 
 
 @pytest.mark.asyncio
-async def test_get_bookmark_by_url(aresponses: ResponsesMockServer) -> None:
+async def test_get_bookmark_by_url(
+    aresponses: ResponsesMockServer,
+    posts_get_empty_response: dict[str, Any],
+    posts_get_response: dict[str, Any],
+) -> None:
     """Test getting bookmarks by date.
 
     Args:
         aresponses: An aresponses server.
+        posts_get_empty_response: A fixture for a posts/get response payload.
+        posts_get_response: A fixture for a posts/get response payload.
     """
     aresponses.add(
         "api.pinboard.in",
         "/v1/posts/get",
         "get",
-        aresponses.Response(text=load_fixture("posts_get_response.xml"), status=200),
+        response=aiohttp.web_response.json_response(
+            posts_get_response, content_type="text/json", status=200
+        ),
     )
     aresponses.add(
         "api.pinboard.in",
         "/v1/posts/get",
         "get",
-        aresponses.Response(
-            text=load_fixture("posts_get_empty_response.xml"), status=200
+        response=aiohttp.web_response.json_response(
+            posts_get_empty_response, content_type="text/json", status=200
         ),
     )
 
-    async with ClientSession() as session:
+    async with aiohttp.ClientSession() as session:
         api = API(TEST_API_TOKEN, session=session)
 
         bookmark = await api.bookmark.async_get_bookmark_by_url("https://mylink.com")
@@ -150,28 +174,36 @@ async def test_get_bookmark_by_url(aresponses: ResponsesMockServer) -> None:
 
 
 @pytest.mark.asyncio
-async def test_get_bookmarks_by_date(aresponses: ResponsesMockServer) -> None:
+async def test_get_bookmarks_by_date(
+    aresponses: ResponsesMockServer,
+    posts_get_empty_response: dict[str, Any],
+    posts_get_response: dict[str, Any],
+) -> None:
     """Test getting bookmarks by date.
 
     Args:
         aresponses: An aresponses server.
+        posts_get_empty_response: A fixture for a posts/get response payload.
+        posts_get_response: A fixture for a posts/get response payload.
     """
     aresponses.add(
         "api.pinboard.in",
         "/v1/posts/get",
         "get",
-        aresponses.Response(text=load_fixture("posts_get_response.xml"), status=200),
+        response=aiohttp.web_response.json_response(
+            posts_get_response, content_type="text/json", status=200
+        ),
     )
     aresponses.add(
         "api.pinboard.in",
         "/v1/posts/get",
         "get",
-        aresponses.Response(
-            text=load_fixture("posts_get_empty_response.xml"), status=200
+        response=aiohttp.web_response.json_response(
+            posts_get_empty_response, content_type="text/json", status=200
         ),
     )
 
-    async with ClientSession() as session:
+    async with aiohttp.ClientSession() as session:
         api = API(TEST_API_TOKEN, session=session)
 
         bookmarks = await api.bookmark.async_get_bookmarks_by_date(
@@ -196,20 +228,25 @@ async def test_get_bookmarks_by_date(aresponses: ResponsesMockServer) -> None:
 
 
 @pytest.mark.asyncio
-async def test_get_dates(aresponses: ResponsesMockServer) -> None:
+async def test_get_dates(
+    aresponses: ResponsesMockServer, posts_dates_response: dict[str, Any]
+) -> None:
     """Test getting bookmarks by date.
 
     Args:
         aresponses: An aresponses server.
+        posts_dates_response: A fixture for a posts/dates response payload.
     """
     aresponses.add(
         "api.pinboard.in",
         "/v1/posts/dates",
         "get",
-        aresponses.Response(text=load_fixture("posts_dates_response.xml"), status=200),
+        response=aiohttp.web_response.json_response(
+            posts_dates_response, content_type="text/json", status=200
+        ),
     )
 
-    async with ClientSession() as session:
+    async with aiohttp.ClientSession() as session:
         api = API(TEST_API_TOKEN, session=session)
 
         dates = await api.bookmark.async_get_dates(tags=["tag1", "tag2"])
@@ -221,20 +258,25 @@ async def test_get_dates(aresponses: ResponsesMockServer) -> None:
 
 
 @pytest.mark.asyncio
-async def test_get_last_change_datetime(aresponses: ResponsesMockServer) -> None:
+async def test_get_last_change_datetime(
+    aresponses: ResponsesMockServer, posts_update_response: dict[str, Any]
+) -> None:
     """Test getting the last time a bookmark was altered.
 
     Args:
         aresponses: An aresponses server.
+        posts_update_response: A fixture for a posts/update response payload.
     """
     aresponses.add(
         "api.pinboard.in",
         "/v1/posts/update",
         "get",
-        aresponses.Response(text=load_fixture("posts_update_response.xml"), status=200),
+        response=aiohttp.web_response.json_response(
+            posts_update_response, content_type="text/json", status=200
+        ),
     )
 
-    async with ClientSession() as session:
+    async with aiohttp.ClientSession() as session:
         api = API(TEST_API_TOKEN, session=session)
         most_recent_dt = await api.bookmark.async_get_last_change_datetime()
 
@@ -243,20 +285,23 @@ async def test_get_last_change_datetime(aresponses: ResponsesMockServer) -> None
 
 @pytest.mark.asyncio
 async def test_get_last_change_datetime_no_session(
-    aresponses: ResponsesMockServer,
+    aresponses: ResponsesMockServer, posts_update_response: dict[str, Any]
 ) -> None:
     """Test getting the last time a bookmark was altered.
 
-    Note that this test also tests a created-on-the-fly ClientSession.
+    Note that this test also tests a created-on-the-fly aiohttp.ClientSession.
 
     Args:
         aresponses: An aresponses server.
+        posts_update_response: A fixture for a posts/update response payload.
     """
     aresponses.add(
         "api.pinboard.in",
         "/v1/posts/update",
         "get",
-        aresponses.Response(text=load_fixture("posts_update_response.xml"), status=200),
+        response=aiohttp.web_response.json_response(
+            posts_update_response, content_type="text/json", status=200
+        ),
     )
 
     api = API(TEST_API_TOKEN)
@@ -266,20 +311,25 @@ async def test_get_last_change_datetime_no_session(
 
 
 @pytest.mark.asyncio
-async def test_get_recent_bookmarks(aresponses: ResponsesMockServer) -> None:
+async def test_get_recent_bookmarks(
+    aresponses: ResponsesMockServer, posts_recent_response: dict[str, Any]
+) -> None:
     """Test getting recent bookmarks.
 
     Args:
         aresponses: An aresponses server.
+        posts_recent_response: A fixture for a posts/recent response payload.
     """
     aresponses.add(
         "api.pinboard.in",
         "/v1/posts/recent",
         "get",
-        aresponses.Response(text=load_fixture("posts_recent_response.xml"), status=200),
+        response=aiohttp.web_response.json_response(
+            posts_recent_response, content_type="text/json", status=200
+        ),
     )
 
-    async with ClientSession() as session:
+    async with aiohttp.ClientSession() as session:
         api = API(TEST_API_TOKEN, session=session)
 
         bookmarks = await api.bookmark.async_get_recent_bookmarks(
@@ -299,26 +349,29 @@ async def test_get_recent_bookmarks(aresponses: ResponsesMockServer) -> None:
 
 
 @pytest.mark.asyncio
-async def test_get_suggested_tags(aresponses: ResponsesMockServer) -> None:
+async def test_get_suggested_tags(
+    aresponses: ResponsesMockServer, posts_suggest_response: dict[str, Any]
+) -> None:
     """Test getting recent bookmarks.
 
     Args:
         aresponses: An aresponses server.
+        posts_suggest_response: A fixture for a posts/suggest response payload.
     """
     aresponses.add(
         "api.pinboard.in",
         "/v1/posts/suggest",
         "get",
-        aresponses.Response(
-            text=load_fixture("posts_suggest_response.xml"), status=200
+        response=aiohttp.web_response.json_response(
+            posts_suggest_response, content_type="text/json", status=200
         ),
     )
 
-    async with ClientSession() as session:
+    async with aiohttp.ClientSession() as session:
         api = API(TEST_API_TOKEN, session=session)
 
         tags = await api.bookmark.async_get_suggested_tags("https://mylink.com")
         assert tags == {
-            "popular": ["security"],
+            "popular": ["linux", "ssh"],
             "recommended": ["ssh", "linux"],
         }
