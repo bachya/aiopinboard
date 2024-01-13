@@ -393,7 +393,7 @@ Thanks to all of [our contributors][contributors] so far!
 [ambient-weather-dashboard]: https://dashboard.ambientweather.net
 [ambient-weather-rate-limiting]: https://ambientweather.docs.apiary.io/#introduction/rate-limiting
 [ambient-weather]: https://ambientweather.net
-[ci-badge]: https://github.com/bachya/aiopinboard/workflows/CI/badge.svg
+[ci-badge]: https://img.shields.io/github/actions/workflow/status/bachya/aiopinboard/test.yml
 [ci]: https://github.com/bachya/aiopinboard/actions
 [codecov-badge]: https://codecov.io/gh/bachya/aiopinboard/branch/dev/graph/badge.svg
 [codecov]: https://codecov.io/gh/bachya/aiopinboard
