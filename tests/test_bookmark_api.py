@@ -1,4 +1,5 @@
 """Test the API."""
+
 from datetime import datetime, timedelta, timezone
 from typing import Any
 

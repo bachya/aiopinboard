@@ -1,4 +1,5 @@
 """Define tests for errors."""
+
 from typing import Any
 
 import aiohttp

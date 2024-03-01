@@ -1,4 +1,5 @@
 """Define exception types for ``aiopinboard``."""
+
 from __future__ import annotations
 
 from aiopinboard.helpers.types import ResponseType

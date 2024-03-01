@@ -1,4 +1,5 @@
 """Run an example script to quickly test the guardian."""
+
 import asyncio
 import logging
 
