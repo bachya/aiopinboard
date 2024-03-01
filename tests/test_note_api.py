@@ -1,4 +1,5 @@
 """Test note API endpoints."""
+
 from datetime import datetime, timezone
 from typing import Any
 

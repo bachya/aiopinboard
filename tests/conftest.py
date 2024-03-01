@@ -1,4 +1,5 @@
 """Define dynamic test fixtures."""
+
 import json
 from typing import Any, cast
 

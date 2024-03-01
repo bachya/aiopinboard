@@ -1,4 +1,5 @@
 """Define API endpoints for nodes."""
+
 from __future__ import annotations
 
 from collections.abc import Awaitable, Callable

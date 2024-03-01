@@ -1,4 +1,5 @@
 """Define an API object to interact with the Pinboard API."""
+
 from __future__ import annotations
 
 import logging
