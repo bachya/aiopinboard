@@ -1,25 +1,29 @@
 """Define tests for errors."""
 
+from __future__ import annotations
+
 from typing import Any
 
 import aiohttp
-import pytest
 from aresponses import ResponsesMockServer
+import pytest
 
 from aiopinboard import API
 from aiopinboard.errors import RequestError
 from tests.common import TEST_API_TOKEN
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_data_error(
     aresponses: ResponsesMockServer, error_response: dict[str, Any]
 ) -> None:
     """Test that a Pinboard data error is handled properly.
 
     Args:
+    ----
         aresponses: An aresponses server.
         error_response: A Pinboard error response.
+
     """
     aresponses.add(
         "api.pinboard.in",
@@ -37,12 +41,14 @@ async def test_data_error(
         assert str(err.value) == "item not found"
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_http_error(aresponses: ResponsesMockServer) -> None:
     """Test that an HTTP error is handled properly.
 
     Args:
+    ----
         aresponses: An aresponses server.
+
     """
     aresponses.add(
         "api.pinboard.in",

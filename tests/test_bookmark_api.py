@@ -1,27 +1,31 @@
 """Test the API."""
 
+from __future__ import annotations
+
 from datetime import datetime, timedelta, timezone
 from typing import Any
 
 import aiohttp
+from aresponses import ResponsesMockServer
 import arrow
 import pytest
-from aresponses import ResponsesMockServer
 
 from aiopinboard import API
 from aiopinboard.bookmark import Bookmark
 from tests.common import TEST_API_TOKEN
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_add_bookmark(
     aresponses: ResponsesMockServer, posts_add_response: dict[str, Any]
 ) -> None:
     """Test deleting a bookmark.
 
     Args:
+    ----
         aresponses: An aresponses server.
         posts_add_response: A fixture for a posts/add response payload.
+
     """
     aresponses.add(
         "api.pinboard.in",
@@ -42,22 +46,24 @@ async def test_add_bookmark(
             "My Test Bookmark",
             description="I like this bookmark",
             tags=["tag1", "tag2"],
-            created_datetime=datetime.now(),
+            created_datetime=datetime.now(tz=timezone.utc),
             replace=True,
             shared=True,
             toread=True,
         )
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_delete_bookmark(
     aresponses: ResponsesMockServer, posts_delete_response: dict[str, Any]
 ) -> None:
     """Test deleting a bookmark.
 
     Args:
+    ----
         aresponses: An aresponses server.
         posts_delete_response: A fixture for a posts/delete response payload.
+
     """
     aresponses.add(
         "api.pinboard.in",
@@ -76,15 +82,17 @@ async def test_delete_bookmark(
         await api.bookmark.async_delete_bookmark("http://test.url")
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_get_all_bookmarks(
     aresponses: ResponsesMockServer, posts_all_response: dict[str, Any]
 ) -> None:
     """Test getting recent bookmarks.
 
     Args:
+    ----
         aresponses: An aresponses server.
         posts_all_response: A fixture for a posts/all response payload.
+
     """
     aresponses.add(
         "api.pinboard.in",
@@ -101,7 +109,7 @@ async def test_get_all_bookmarks(
         # Define a static datetime to test against:
         fixture_bookmark_date = datetime.strptime(
             "2020-09-02T03:59:55Z", "%Y-%m-%dT%H:%M:%SZ"
-        )
+        ).replace(tzinfo=timezone.utc)
         bookmarks = await api.bookmark.async_get_all_bookmarks(
             tags=["tag1"],
             start=2,
@@ -123,7 +131,7 @@ async def test_get_all_bookmarks(
         )
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_get_bookmark_by_url(
     aresponses: ResponsesMockServer,
     posts_get_empty_response: dict[str, Any],
@@ -132,9 +140,11 @@ async def test_get_bookmark_by_url(
     """Test getting bookmarks by date.
 
     Args:
+    ----
         aresponses: An aresponses server.
         posts_get_empty_response: A fixture for a posts/get response payload.
         posts_get_response: A fixture for a posts/get response payload.
+
     """
     aresponses.add(
         "api.pinboard.in",
@@ -174,7 +184,7 @@ async def test_get_bookmark_by_url(
         assert not bookmark
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_get_bookmarks_by_date(
     aresponses: ResponsesMockServer,
     posts_get_empty_response: dict[str, Any],
@@ -183,9 +193,11 @@ async def test_get_bookmarks_by_date(
     """Test getting bookmarks by date.
 
     Args:
+    ----
         aresponses: An aresponses server.
         posts_get_empty_response: A fixture for a posts/get response payload.
         posts_get_response: A fixture for a posts/get response payload.
+
     """
     aresponses.add(
         "api.pinboard.in",
@@ -228,15 +240,17 @@ async def test_get_bookmarks_by_date(
         assert not bookmarks
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_get_dates(
     aresponses: ResponsesMockServer, posts_dates_response: dict[str, Any]
 ) -> None:
     """Test getting bookmarks by date.
 
     Args:
+    ----
         aresponses: An aresponses server.
         posts_dates_response: A fixture for a posts/dates response payload.
+
     """
     aresponses.add(
         "api.pinboard.in",
@@ -258,15 +272,17 @@ async def test_get_dates(
         }
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_get_last_change_datetime(
     aresponses: ResponsesMockServer, posts_update_response: dict[str, Any]
 ) -> None:
     """Test getting the last time a bookmark was altered.
 
     Args:
+    ----
         aresponses: An aresponses server.
         posts_update_response: A fixture for a posts/update response payload.
+
     """
     aresponses.add(
         "api.pinboard.in",
@@ -284,7 +300,7 @@ async def test_get_last_change_datetime(
         assert most_recent_dt == datetime(2020, 9, 3, 13, 7, 19, tzinfo=timezone.utc)
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_get_last_change_datetime_no_session(
     aresponses: ResponsesMockServer, posts_update_response: dict[str, Any]
 ) -> None:
@@ -293,8 +309,10 @@ async def test_get_last_change_datetime_no_session(
     Note that this test also tests a created-on-the-fly aiohttp.ClientSession.
 
     Args:
+    ----
         aresponses: An aresponses server.
         posts_update_response: A fixture for a posts/update response payload.
+
     """
     aresponses.add(
         "api.pinboard.in",
@@ -311,15 +329,17 @@ async def test_get_last_change_datetime_no_session(
     assert most_recent_dt == datetime(2020, 9, 3, 13, 7, 19, tzinfo=timezone.utc)
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_get_recent_bookmarks(
     aresponses: ResponsesMockServer, posts_recent_response: dict[str, Any]
 ) -> None:
     """Test getting recent bookmarks.
 
     Args:
+    ----
         aresponses: An aresponses server.
         posts_recent_response: A fixture for a posts/recent response payload.
+
     """
     aresponses.add(
         "api.pinboard.in",
@@ -349,15 +369,17 @@ async def test_get_recent_bookmarks(
         )
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_get_suggested_tags(
     aresponses: ResponsesMockServer, posts_suggest_response: dict[str, Any]
 ) -> None:
     """Test getting recent bookmarks.
 
     Args:
+    ----
         aresponses: An aresponses server.
         posts_suggest_response: A fixture for a posts/suggest response payload.
+
     """
     aresponses.add(
         "api.pinboard.in",

@@ -1,24 +1,28 @@
 """Test tag API endpoints."""
 
+from __future__ import annotations
+
 from typing import Any
 
 import aiohttp
-import pytest
 from aresponses import ResponsesMockServer
+import pytest
 
 from aiopinboard import API
 from tests.common import TEST_API_TOKEN
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_delete_tag(
     aresponses: ResponsesMockServer, tags_delete_response: dict[str, Any]
 ) -> None:
     """Test deleting a tag.
 
     Args:
+    ----
         aresponses: An aresponses server.
         tags_delete_response: A fixture for a tags/delete response payload.
+
     """
     aresponses.add(
         "api.pinboard.in",
@@ -37,15 +41,17 @@ async def test_delete_tag(
         await api.tag.async_delete_tag("tag1")
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_get_tags(
     aresponses: ResponsesMockServer, tags_get_response: dict[str, Any]
 ) -> None:
     """Test getting tags.
 
     Args:
+    ----
         aresponses: An aresponses server.
         tags_get_response: A fixture for a tags/get response payload.
+
     """
     aresponses.add(
         "api.pinboard.in",
@@ -63,15 +69,17 @@ async def test_get_tags(
         assert tags == {"tag1": 3, "tag2": 1, "tag3": 2}
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_rename_tag(
     aresponses: ResponsesMockServer, tags_rename_response: dict[str, Any]
 ) -> None:
     """Test renaming a tag.
 
     Args:
+    ----
         aresponses: An aresponses server.
         tags_rename_response: A fixture for a tags/rename response payload.
+
     """
     aresponses.add(
         "api.pinboard.in",

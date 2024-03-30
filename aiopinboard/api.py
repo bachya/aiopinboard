@@ -34,8 +34,10 @@ class API:  # pylint: disable=too-few-public-methods
         """Initialize.
 
         Args:
+        ----
             api_token: A Pinboard API token.
             session: An optional aiohttp ClientSession.
+
         """
         self._api_token = api_token
         self._session = session
@@ -50,15 +52,19 @@ class API:  # pylint: disable=too-few-public-methods
         """Make a request to the API and return the XML response.
 
         Args:
+        ----
             method: An HTTP method.
             endpoint: A relative API endpoint.
             **kwargs: Additional kwargs to send with the request.
 
         Returns:
+        -------
             An API response payload.
 
         Raises:
+        ------
             RequestError: Raised upon an underlying HTTP error.
+
         """
         kwargs.setdefault("params", {})
         kwargs["params"]["auth_token"] = self._api_token

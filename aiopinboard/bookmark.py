@@ -28,14 +28,17 @@ class Bookmark:
     shared: bool
 
     @classmethod
-    def from_api_response(cls, data: dict[str, Any]) -> Bookmark:
+    def from_api_response(cls: type[Bookmark], data: dict[str, Any]) -> Bookmark:
         """Create a bookmark from an API response.
 
         Args:
+        ----
             data: The API response data.
 
         Returns:
+        -------
             A Bookmark object.
+
         """
         return Bookmark(
             data["hash"],
@@ -52,15 +55,17 @@ class Bookmark:
 class BookmarkAPI:
     """Define an API "manager" object."""
 
-    def __init__(self, async_request: Callable[..., Awaitable[ResponseType]]):
+    def __init__(self, async_request: Callable[..., Awaitable[ResponseType]]) -> None:
         """Initialize.
 
         Args:
+        ----
             async_request: The request method from the Client object.
+
         """
         self._async_request = async_request
 
-    async def async_add_bookmark(  # pylint: disable=too-many-arguments
+    async def async_add_bookmark(
         self,
         url: str,
         title: str,
@@ -75,6 +80,7 @@ class BookmarkAPI:
         """Add a new bookmark.
 
         Args:
+        ----
             url: The URL of the bookmark.
             title: The title of the bookmark.
             description: The optional description of the bookmark.
@@ -83,6 +89,7 @@ class BookmarkAPI:
             replace: Whether this should replace a bookmark with the same URL.
             shared: Whether this bookmark should be shared.
             toread: Whether this bookmark should be unread.
+
         """
         params: dict[str, Any] = {"url": url, "description": title}
 
@@ -103,11 +110,13 @@ class BookmarkAPI:
         """Delete a bookmark by URL.
 
         Args:
+        ----
             url: The URL of the bookmark to delete.
+
         """
         await self._async_request("get", "posts/delete", params={"url": url})
 
-    async def async_get_all_bookmarks(  # pylint: disable=too-many-arguments
+    async def async_get_all_bookmarks(
         self,
         *,
         tags: list[str] | None = None,
@@ -119,6 +128,7 @@ class BookmarkAPI:
         """Get recent bookmarks.
 
         Args:
+        ----
             tags: An optional list of tags to filter results by.
             start: The optional starting index to return (defaults to the start).
             results: The optional number of results (defaults to all).
@@ -126,7 +136,9 @@ class BookmarkAPI:
             to_dt: The optional datetime to end at.
 
         Returns:
+        -------
             A list of Bookmark objects.
+
         """
         params: dict[str, Any] = {"start": start}
 
@@ -148,10 +160,13 @@ class BookmarkAPI:
         """Get bookmark by a URL.
 
         Args:
+        ----
             url: The URL of the bookmark to get
 
         Returns:
+        -------
             A bookmark object (or None if no bookmark exists for the URL).
+
         """
         data = cast(
             DictType, await self._async_request("get", "posts/get", params={"url": url})
@@ -168,11 +183,14 @@ class BookmarkAPI:
         """Get bookmarks that were created on a specific date.
 
         Args:
+        ----
             bookmarked_on: The date to examine.
             tags: An optional list of tags to filter results by.
 
         Returns:
+        -------
             A list of Bookmark objects.
+
         """
         params: dict[str, Any] = {"dt": str(bookmarked_on)}
 
@@ -190,10 +208,13 @@ class BookmarkAPI:
         """Get a dictionary of dates and the number of bookmarks created on that date.
 
         Args:
+        ----
             tags: An optional list of tags to filter results by.
 
         Returns:
+        -------
             A dictionary of dates and the number of bookmarks for that date.
+
         """
         params: dict[str, Any] = {}
 
@@ -210,8 +231,10 @@ class BookmarkAPI:
     async def async_get_last_change_datetime(self) -> datetime:
         """Return the most recent time a bookmark was added, updated or deleted.
 
-        Returns:
+        Returns
+        -------
             A datetime object.
+
         """
         data = cast(DictType, await self._async_request("get", "posts/update"))
         parsed = arrow.get(data["update_time"])
@@ -226,11 +249,14 @@ class BookmarkAPI:
         """Get recent bookmarks.
 
         Args:
+        ----
             count: The number of bookmarks to return (max of 100).
             tags: An optional list of tags to filter results by.
 
         Returns:
+        -------
             A list of Bookmark objects.
+
         """
         params: dict[str, Any] = {"count": count}
 
@@ -246,10 +272,13 @@ class BookmarkAPI:
         """Return a dictionary of popular and recommended tags for a URL.
 
         Args:
+        ----
             url: The URL of the bookmark to delete.
 
         Returns:
+        -------
             A dictionary of tags.
+
         """
         data = cast(
             ListDictType,
