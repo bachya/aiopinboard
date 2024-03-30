@@ -1,26 +1,30 @@
 """Test note API endpoints."""
 
+from __future__ import annotations
+
 from datetime import datetime, timezone
 from typing import Any
 
 import aiohttp
-import pytest
 from aresponses import ResponsesMockServer
+import pytest
 
 from aiopinboard import API
 from aiopinboard.note import Note
 from tests.common import TEST_API_TOKEN
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_get_notes(
     aresponses: ResponsesMockServer, notes_get_response: dict[str, Any]
 ) -> None:
     """Test getting notes.
 
     Args:
+    ----
         aresponses: An aresponses server.
         notes_get_response: A notes get response.
+
     """
     aresponses.add(
         "api.pinboard.in",

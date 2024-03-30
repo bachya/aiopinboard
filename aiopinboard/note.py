@@ -13,7 +13,7 @@ from aiopinboard.helpers.types import DictType, ResponseType
 
 
 @dataclass
-class Note:  # pylint: disable=too-many-instance-attributes
+class Note:
     """Define a representation of a Pinboard note."""
 
     note_id: str
@@ -24,14 +24,17 @@ class Note:  # pylint: disable=too-many-instance-attributes
     length: int
 
     @classmethod
-    def from_api_response(cls, data: dict[str, Any]) -> Note:
+    def from_api_response(cls: type[Note], data: dict[str, Any]) -> Note:
         """Create a note from an API response.
 
         Args:
+        ----
             data: The API response data.
 
         Returns:
+        -------
             A Note object.
+
         """
         return cls(
             data["id"],
@@ -50,15 +53,19 @@ class NoteAPI:  # pylint: disable=too-few-public-methods
         """Initialize.
 
         Args:
+        ----
             async_request: The request method from the Client object.
+
         """
         self._async_request = async_request
 
     async def async_get_notes(self) -> list[Note]:
         """Get all notes.
 
-        Returns:
+        Returns
+        -------
             A list of Note objects.
+
         """
         data = cast(DictType, await self._async_request("get", "notes/list"))
         return [Note.from_api_response(note) for note in data["notes"]]

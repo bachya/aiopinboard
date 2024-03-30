@@ -15,7 +15,9 @@ class TagAPI:
         """Initialize.
 
         Args:
+        ----
             async_request: The request method from the Client object.
+
         """
         self._async_request = async_request
 
@@ -23,15 +25,19 @@ class TagAPI:
         """Delete a tag.
 
         Args:
+        ----
             tag: The tag to delete.
+
         """
         await self._async_request("get", "tags/delete", params={"tag": tag})
 
     async def async_get_tags(self) -> dict[str, int]:
         """Get a mapping of all tags in this account and how many times each is used.
 
-        Returns:
+        Returns
+        -------
             A dictionary of tags and usage count.
+
         """
         return cast(dict[str, int], await self._async_request("get", "tags/get"))
 
@@ -39,7 +45,9 @@ class TagAPI:
         """Rename a tag.
 
         Args:
+        ----
             old: The tag to rename.
             new: The new name.
+
         """
         await self._async_request("get", "tags/rename", params={"old": old, "new": new})
