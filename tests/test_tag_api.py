@@ -12,7 +12,7 @@ from aiopinboard import API
 from tests.common import TEST_API_TOKEN
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_delete_tag(
     aresponses: ResponsesMockServer, tags_delete_response: dict[str, Any]
 ) -> None:
@@ -41,7 +41,7 @@ async def test_delete_tag(
         await api.tag.async_delete_tag("tag1")
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_get_tags(
     aresponses: ResponsesMockServer, tags_get_response: dict[str, Any]
 ) -> None:
@@ -69,7 +69,7 @@ async def test_get_tags(
         assert tags == {"tag1": 3, "tag2": 1, "tag3": 2}
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_rename_tag(
     aresponses: ResponsesMockServer, tags_rename_response: dict[str, Any]
 ) -> None:

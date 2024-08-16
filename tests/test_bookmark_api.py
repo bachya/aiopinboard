@@ -15,7 +15,7 @@ from aiopinboard.bookmark import Bookmark
 from tests.common import TEST_API_TOKEN
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_add_bookmark(
     aresponses: ResponsesMockServer, posts_add_response: dict[str, Any]
 ) -> None:
@@ -53,7 +53,7 @@ async def test_add_bookmark(
         )
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_delete_bookmark(
     aresponses: ResponsesMockServer, posts_delete_response: dict[str, Any]
 ) -> None:
@@ -82,7 +82,7 @@ async def test_delete_bookmark(
         await api.bookmark.async_delete_bookmark("http://test.url")
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_get_all_bookmarks(
     aresponses: ResponsesMockServer, posts_all_response: dict[str, Any]
 ) -> None:
@@ -131,7 +131,7 @@ async def test_get_all_bookmarks(
         )
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_get_bookmark_by_url(
     aresponses: ResponsesMockServer,
     posts_get_empty_response: dict[str, Any],
@@ -184,7 +184,7 @@ async def test_get_bookmark_by_url(
         assert not bookmark
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_get_bookmarks_by_date(
     aresponses: ResponsesMockServer,
     posts_get_empty_response: dict[str, Any],
@@ -240,7 +240,7 @@ async def test_get_bookmarks_by_date(
         assert not bookmarks
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_get_dates(
     aresponses: ResponsesMockServer, posts_dates_response: dict[str, Any]
 ) -> None:
@@ -272,7 +272,7 @@ async def test_get_dates(
         }
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_get_last_change_datetime(
     aresponses: ResponsesMockServer, posts_update_response: dict[str, Any]
 ) -> None:
@@ -300,7 +300,7 @@ async def test_get_last_change_datetime(
         assert most_recent_dt == datetime(2020, 9, 3, 13, 7, 19, tzinfo=timezone.utc)
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_get_last_change_datetime_no_session(
     aresponses: ResponsesMockServer, posts_update_response: dict[str, Any]
 ) -> None:
@@ -329,7 +329,7 @@ async def test_get_last_change_datetime_no_session(
     assert most_recent_dt == datetime(2020, 9, 3, 13, 7, 19, tzinfo=timezone.utc)
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_get_recent_bookmarks(
     aresponses: ResponsesMockServer, posts_recent_response: dict[str, Any]
 ) -> None:
@@ -369,7 +369,7 @@ async def test_get_recent_bookmarks(
         )
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_get_suggested_tags(
     aresponses: ResponsesMockServer, posts_suggest_response: dict[str, Any]
 ) -> None:
