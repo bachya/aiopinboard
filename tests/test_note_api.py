@@ -14,7 +14,7 @@ from aiopinboard.note import Note
 from tests.common import TEST_API_TOKEN
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_get_notes(
     aresponses: ResponsesMockServer, notes_get_response: dict[str, Any]
 ) -> None:

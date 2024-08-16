@@ -13,7 +13,7 @@ from aiopinboard.errors import RequestError
 from tests.common import TEST_API_TOKEN
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_data_error(
     aresponses: ResponsesMockServer, error_response: dict[str, Any]
 ) -> None:
@@ -41,7 +41,7 @@ async def test_data_error(
         assert str(err.value) == "item not found"
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_http_error(aresponses: ResponsesMockServer) -> None:
     """Test that an HTTP error is handled properly.
 
